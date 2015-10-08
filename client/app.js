@@ -1,13 +1,18 @@
 var makeStateRouter = require('abstract-state-router')
-var ractiveRenderer = require('ractive-state-router')()
+var makeRactiveRenderer = require('ractive-state-router')
 var socketio = require('socket.io-client')
+var fs = require('fs')
 
 var socket = socketio(window.location.host)
+var ractiveRenderer = makeRactiveRenderer({
+	decorators: {
+	}
+})
 var stateRouter = makeStateRouter(ractiveRenderer, 'body')
 
 stateRouter.addState({
 	name: 'app',
-	template: '<ui-view></ui-view>'
+	template: fs.readFileSync('client/app.html', { encoding: 'utf8' })
 })
 
 var context = {

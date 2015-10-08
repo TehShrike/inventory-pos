@@ -9,9 +9,9 @@ var COLUMNS = ['customer_id', 'name', 'drivers_license', 'social_security', 'pho
 var schema = Joi.object({
 	customer_id: Joi.number().integer().max(4294967295).min(0),
 	name: Joi.string().max(500),
-	drivers_license: Joi.string().max(20),
-	social_security: Joi.string().max(20),
-	phone_number: Joi.string().max(30),
+	drivers_license: Joi.string().empty('').default('').max(20),
+	social_security: Joi.string().empty('').default('').max(20),
+	phone_number: Joi.string().empty('').default('').max(30),
 	customer_type: Joi.any().valid('recreational','medical','wholesale'),
 	version: Joi.number().integer().max(4294967295).min(0)
 })

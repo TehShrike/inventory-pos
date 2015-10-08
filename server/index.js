@@ -5,8 +5,6 @@ var socketHandler = require('./socket-server')
 var path = require('path')
 var mysql = require('mysql')
 
-var mysql = require('mysql')
-
 var pool = mysql.createPool({
 	host: '127.0.0.1',
 	user: 'root',

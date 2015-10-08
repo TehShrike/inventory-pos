@@ -1,3 +1,19 @@
-<div>
-	sup dawg
+<div class="col-xs-offset-3 col-xs-6">
+	<form>
+		<div class="form-group">
+			<input type="text"
+					class="form-control"
+					placeholder="Customer name or number"
+					value="{{autocomplete}}">
+		</div>
+	</form>
+</div>
+<div class="col-xs-offset-4 col-xs-4">
+	<ol>
+		{{#matching}}
+			<li>
+				{{name}}
+			</li>
+		{{/matching}}
+	</ol>
 </div>

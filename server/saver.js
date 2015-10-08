@@ -35,6 +35,8 @@ module.exports = function saver(table, schema, db, row, cb) {
 				e.outOfDate = true
 				cb(e)
 			} else {
+				toSave[primaryKeyName] = results.insertId || oldPrimaryKey
+
 				cb(null, camelize(toSave))
 			}
 		})
