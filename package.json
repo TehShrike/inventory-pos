@@ -20,6 +20,7 @@
   "homepage": "https://github.com/TehShrike/inventory-pos#readme",
   "dependencies": {
     "abstract-state-router": "~5.7.0",
+    "bacon-form-saving": "1.1.0",
     "baconjs": "0.7.75",
     "camelize": "1.0.0",
     "ecstatic": "1.0.0",

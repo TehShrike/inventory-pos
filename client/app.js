@@ -20,8 +20,9 @@ var context = {
 	socket: socket
 }
 
+require('./customer-search')(context)
 require('./customer')(context)
 
 socket.on('connect', function() {
-	stateRouter.evaluateCurrentRoute('app.customer')
+	stateRouter.evaluateCurrentRoute('app.customer-search')
 })

@@ -1,0 +1,23 @@
+<div class="col-xs-offset-3 col-xs-6">
+	<form>
+		<div class="form-group">
+			<input type="text"
+					class="form-control"
+					placeholder="Customer name or number"
+					value="{{autocomplete}}">
+		</div>
+	</form>
+</div>
+<div class="col-xs-offset-3 col-xs-6">
+	<table class="table table-hover">
+		<tbody>
+			{{#matching}}
+				<tr class="cursor-pointer" on-click="navigate-to-customer:{{customerId}}">
+					<td>
+						{{name}}
+					</td>
+				</tr>
+			{{/matching}}
+		</tbody>
+	</table>
+</div>

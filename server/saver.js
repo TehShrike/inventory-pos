@@ -1,43 +1,56 @@
 var snakeize = require('snakeize')
-var camelize = require('camelize')
 
-module.exports = function saver(table, schema, db, row, cb) {
+module.exports = function saver(table, options, row, cb) {
+	var db = options.db
+	var load = options.load
+	var primaryKeyName = table + '_id'
 	var snakedObject = snakeize(row)
+	var oldPrimaryKey = snakedObject[primaryKeyName]
+
+	var insert = !oldPrimaryKey
+
+	var schema = insert ? options.insertSchema : options.updateSchema
+
 	var validated = schema.validate(snakedObject)
+
 	if (validated.error) {
 		process.nextTick(function() {
 			cb(validated.error)
 		})
 	} else {
 		var toSave = validated.value
-		var primaryKeyName = table + '_id'
 
-		var oldPrimaryKey = toSave[primaryKeyName]
 		var query, queryParams
 		var oldVersion = toSave.version || 0
-
-		if (oldPrimaryKey) {
-			query = 'UPDATE ' + table + ' SET ? WHERE ' + primaryKeyName + ' = ? AND version = ?'
-			queryParams = [ toSave, oldPrimaryKey, oldVersion]
-		} else {
-			query = 'INSERT INTO ' + table + ' SET ?'
-			queryParams = [ toSave ]
-		}
-
-		delete toSave[primaryKeyName]
 		toSave.version = oldVersion + 1
+		delete toSave[primaryKeyName]
+
+		if (insert) {
+			query = 'INSERT INTO ?? SET ?'
+			queryParams = [ table, toSave ]
+		} else {
+			query = 'UPDATE ?? SET ? WHERE ?? = ? AND version = ?'
+			queryParams = [ table, toSave, primaryKeyName, oldPrimaryKey, oldVersion ]
+		}
 
 		db.query(query, queryParams, function(err, results) {
 			if (err) {
 				cb(err)
 			} else if (results.affectedRows === 0) {
-				var e = new Error('Somebody saved a newer version')
-				e.outOfDate = true
-				cb(e)
+				var versionError = new Error('Somebody saved a newer version')
+				versionError.outOfDate = true
+				load(oldPrimaryKey, function(selectError, newVersion) {
+					if (selectError) {
+						cb(selectError)
+					} else {
+						versionError.newVersion = newVersion
+						cb(versionError)
+					}
+				})
 			} else {
-				toSave[primaryKeyName] = results.insertId || oldPrimaryKey
+				var primaryKey = results.insertId || oldPrimaryKey
 
-				cb(null, camelize(toSave))
+				load(primaryKey, cb)
 			}
 		})
 	}

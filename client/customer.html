@@ -1,19 +1,67 @@
-<div class="col-xs-offset-3 col-xs-6">
-	<form>
-		<div class="form-group">
-			<input type="text"
-					class="form-control"
-					placeholder="Customer name or number"
-					value="{{autocomplete}}">
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="page-header">
+				<h1>
+					{{customer.name}} <small>{{customer.customerType}}</small>
+				</h1>
+			</div>
 		</div>
-	</form>
+	</div>
+	<div class="row">
+		<form class="form-horizontal" on-submit="return false">
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="control-label col-xs-2">
+						Name
+					</label>
+					<div class="col-xs-10">
+						{{>savingInput { column: 'name' }}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">
+						Drivers License #
+					</label>
+					<div class="col-xs-10">
+						{{>savingInput { column: 'driversLicense' }}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">
+						Social Security #
+					</label>
+					<div class="col-xs-10">
+						{{>savingInput { column: 'socialSecurity' }}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">
+						Phone #
+					</label>
+					<div class="col-xs-10">
+						{{>savingInput { column: 'phoneNumber' }}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-2">
+						Customer Type
+					</label>
+					<div class="col-xs-10">
+						<select name="customer-type" class="form-control" value="{{customer.customerType}}">
+							<option value="recreational">Recreational</option>
+							<option value="medical">Medical</option>
+							<option value="wholesale">Wholesale</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
-<div class="col-xs-offset-4 col-xs-4">
-	<ol>
-		{{#matching}}
-			<li>
-				{{name}}
-			</li>
-		{{/matching}}
-	</ol>
-</div>
+
+
+{{#partial savingInput}}
+	<input type="text" class="form-control" value="{{customer[column]}}" readonly="{{saving.customer[column]}}" lazy>
+	{{#saving.customer[column]}}Saving...{{/saving.customer[column]}}
+{{/partial}}
