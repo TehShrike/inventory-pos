@@ -5,3 +5,8 @@
 .cursor-pointer {
 	cursor: pointer;
 }
+
+.form-control-feedback.fa {
+	padding-top: 14px;
+	padding-right: 15px;
+}

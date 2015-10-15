@@ -24,6 +24,12 @@ module.exports = function(appContext) {
 		activate: function(context) {
 			var ractive = context.domApi
 
+			ractive.set('formFeedback', function(key) {
+				if (ractive.get('saved.customer.' + key)) {
+					return 'has-success'
+				}
+			})
+
 			var fields = [ 'name', 'driversLicense', 'socialSecurity', 'phoneNumber', 'customerType' ]
 
 			var allFieldChangesStream = Bacon.mergeAll(fields.map(function(field) {
@@ -39,31 +45,59 @@ module.exports = function(appContext) {
 			}
 
 			allFieldChangesStream.onValue(function(changes) {
-				var o = prependKeysWith('saving.customer.', changes)
+				ractive.set(allProperties(true, prependKeysWith('saving.customer.', changes)))
 
-				ractive.set(o)
+				// TODO: should set the saved to false when onfocus happens, not on change
+				ractive.set(allProperties(false, prependKeysWith('saved.customer.', changes)))
 			})
 
-			var saved = makeSavingStream(allFieldChangesStream, context.content.customer, 'customerId', saveCustomer)
+			var streams = makeSavingStream(allFieldChangesStream, context.content.customer, 'customerId', saveCustomer)
 
-			saved.onError(function(err) {
+			streams.newVersionsFromServer.onError(function(err) {
 				console.error(err)
 			})
 
-			saved.onValue(function(changeReportedByServer) {
-				ractive.set(prependKeysWith('customer.', changeReportedByServer))
+			streams.newVersionsFromServer.onValue(function(newVersionFromServer) {
+				ractive.set(prependKeysWith('customer.', newVersionFromServer))
+			})
 
-				var savingKeys = prependKeysWith('saving.customer.', changeReportedByServer)
-
-				Object.keys(savingKeys).forEach(function(key) {
-					savingKeys[key] = false
+			streams.propertiesSavedAndGotBackFromServer.onValue(function(newlySavedProperties) {
+				newlySavedProperties.map(function(property) {
+					return 'saving.customer.' + property
+				}).forEach(function(property) {
+					ractive.set(property, false)
 				})
 
-				ractive.set(savingKeys)
+				newlySavedProperties.map(function(property) {
+					return 'saved.customer.' + property
+				}).forEach(function(property) {
+					ractive.set(property, true)
+				})
 			})
 
 		}
 	})
+}
+
+function differentKeys(o1, o2) {
+	return set(Object.keys(o1), Object.keys(o2)).filter(function(memo, key) {
+		o1[key] !== o2[key]
+	})
+}
+
+function set(ary1, ary2) {
+	var o = {}
+	ary1.concat(ary2).forEach(function(key) {
+		o[key] = true
+	})
+	return Object.keys(o)
+}
+
+function allProperties(value, o) {
+	return Object.keys(o).reduce(function(memo, key) {
+		memo[key] = value
+		return memo
+	}, {})
 }
 
 function prependKeysWith(str, o) {

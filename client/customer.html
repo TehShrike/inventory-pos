@@ -11,7 +11,7 @@
 	<div class="row">
 		<form class="form-horizontal" on-submit="return false">
 			<div class="col-xs-6">
-				<div class="form-group">
+				<div class="form-group {{#saved.customer.name}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Name
 					</label>
@@ -19,7 +19,7 @@
 						{{>savingInput { column: 'name' }}}
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group {{#saved.customer.driversLicense}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Drivers License #
 					</label>
@@ -27,7 +27,7 @@
 						{{>savingInput { column: 'driversLicense' }}}
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group {{#saved.customer.socialSecurity}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Social Security #
 					</label>
@@ -35,7 +35,7 @@
 						{{>savingInput { column: 'socialSecurity' }}}
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group {{#saved.customer.phoneNumber}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Phone #
 					</label>
@@ -43,7 +43,7 @@
 						{{>savingInput { column: 'phoneNumber' }}}
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group {{#saved.customer.customerType}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Customer Type
 					</label>
@@ -63,5 +63,7 @@
 
 {{#partial savingInput}}
 	<input type="text" class="form-control" value="{{customer[column]}}" readonly="{{saving.customer[column]}}" lazy>
-	{{#saving.customer[column]}}Saving...{{/saving.customer[column]}}
+	{{#saved.customer[column]}}
+	<i class="fa fa-check form-control-feedback"></i>
+	{{/saved.customer[column]}}
 {{/partial}}
