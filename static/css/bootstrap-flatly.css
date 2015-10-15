@@ -267,7 +267,7 @@ th {
     border: 1px solid #ddd !important;
   }
 }
-@font-face {
+/*@font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
@@ -1069,7 +1069,7 @@ th {
 }
 .glyphicon-menu-up:before {
   content: "\e260";
-}
+}*/
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -6401,7 +6401,7 @@ button.close {
   opacity: 0.9;
   filter: alpha(opacity=90);
 }
-.carousel-control .icon-prev,
+/*.carousel-control .icon-prev,
 .carousel-control .icon-next,
 .carousel-control .glyphicon-chevron-left,
 .carousel-control .glyphicon-chevron-right {
@@ -6433,7 +6433,7 @@ button.close {
 }
 .carousel-control .icon-next:before {
   content: '\203a';
-}
+}*/
 .carousel-indicators {
   position: absolute;
   bottom: 10px;
@@ -6479,7 +6479,7 @@ button.close {
   text-shadow: none;
 }
 @media screen and (min-width: 768px) {
-  .carousel-control .glyphicon-chevron-left,
+/*  .carousel-control .glyphicon-chevron-left,
   .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-prev,
   .carousel-control .icon-next {
@@ -6495,7 +6495,7 @@ button.close {
   .carousel-control .glyphicon-chevron-right,
   .carousel-control .icon-next {
     margin-right: -15px;
-  }
+  }*/
   .carousel-caption {
     left: 20%;
     right: 20%;
