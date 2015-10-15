@@ -1,23 +1,31 @@
-<div class="col-xs-offset-3 col-xs-6">
-	<form>
-		<div class="form-group">
-			<input type="text"
-					class="form-control"
-					placeholder="Customer name or number"
-					value="{{autocomplete}}">
-		</div>
-	</form>
+<div class="row">
+	<div class="col-xs-offset-3 col-xs-6">
+		<form>
+			<div class="form-group">
+				<input type="text"
+						class="form-control"
+						placeholder="Customer name or number"
+						value="{{autocomplete}}">
+			</div>
+		</form>
+	</div>
+	<div class="col-xs-3">
+		<button class="btn btn-success" on-click="new-medical">New medical</button>
+		<button class="btn btn-info" on-click="new-recreational">New recreational</button>
+	</div>
 </div>
-<div class="col-xs-offset-3 col-xs-6">
-	<table class="table table-hover">
-		<tbody>
-			{{#matching}}
-				<tr class="cursor-pointer" on-click="navigate-to-customer:{{customerId}}">
-					<td>
-						{{name}}
-					</td>
-				</tr>
-			{{/matching}}
-		</tbody>
-	</table>
+<div class="row">
+	<div class="col-xs-offset-3 col-xs-6">
+		<table class="table table-hover">
+			<tbody>
+				{{#matching}}
+					<tr class="cursor-pointer" on-click="navigate-to-customer:{{customerId}}">
+						<td>
+							{{name}}
+						</td>
+					</tr>
+				{{/matching}}
+			</tbody>
+		</table>
+	</div>
 </div>

@@ -27,6 +27,42 @@ module.exports = function(appContext) {
 			})
 
 			matchingCustomers.assign(ractive, 'set', 'matching')
+
+			function saveCustomer(customer, cb) {
+				socket.emit('save customer', customer, cb)
+			}
+
+			var savingMedical = Bacon.fromEvent(ractive, 'new-medical').map(function(event) {
+				return {
+					name: ractive.get('autocomplete'),
+					customerType: 'medical'
+				}
+			}).flatMap(function(newCustomer) {
+				return Bacon.fromNodeCallback(saveCustomer, newCustomer)
+			})
+
+			savingMedical.onValue(function(customer) {
+				appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
+			})
+			savingMedical.onError(function(err) {
+				console.error(err)
+			})
+
+			var savingRecreational = Bacon.fromEvent(ractive, 'new-recreational').map(function(event) {
+				return {
+					name: ractive.get('autocomplete'),
+					customerType: 'recreational'
+				}
+			}).flatMap(function(newCustomer) {
+				return Bacon.fromNodeCallback(saveCustomer, newCustomer)
+			})
+
+			savingRecreational.onValue(function(customer) {
+				appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
+			})
+			savingRecreational.onError(function(err) {
+				console.error(err)
+			})
 		}
 	})
 }
