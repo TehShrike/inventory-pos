@@ -8,6 +8,7 @@ var ractiveRenderer = makeRactiveRenderer({
 	decorators: {
 	}
 })
+
 var stateRouter = makeStateRouter(ractiveRenderer, 'body')
 
 stateRouter.addState({
@@ -24,5 +25,8 @@ require('./customer-search')(context)
 require('./customer')(context)
 
 socket.on('connect', function() {
-	stateRouter.evaluateCurrentRoute('app.customer-search')
+	var userId = 666 // why not
+	socket.emit('authenticate', userId, function(err, user) {
+		stateRouter.evaluateCurrentRoute('app.customer-search')
+	})
 })

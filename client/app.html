@@ -1,3 +1,15 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<ul class="nav navbar-nav">
+				<li decorator="active:app.topics">
+					<a href="{{ makePath('app.customer-search') }}">Customer</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
 <div class="container app-container">
 	<div class="row">
 		<ui-view></ui-view>

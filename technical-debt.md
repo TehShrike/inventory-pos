@@ -2,3 +2,7 @@
 
 - no login system + any concept of users
 - customer search won't scale past 10k customers
+
+## User interface
+
+- keyboard control of the customer search interface

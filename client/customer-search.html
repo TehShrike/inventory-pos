@@ -23,6 +23,13 @@
 						<td>
 							{{name}}
 						</td>
+						<td>
+							{{#customerType == 'medical'}}
+								<span class="light label label-success">Medical</span>
+							{{elseif customerType == 'recreational'}}
+								<span class="light label label-info">Recreational</span>
+							{{/}}
+						</td>
 					</tr>
 				{{/matching}}
 			</tbody>
