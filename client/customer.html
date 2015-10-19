@@ -9,8 +9,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<form class="form-horizontal" on-submit="return false">
-			<div class="col-xs-6">
+		<div class="col-xs-6">
+			<form class="form-horizontal" on-submit="return false">
 				<div class="form-group {{#saved.customer.name}}has-success{{/}}">
 					<label class="control-label col-xs-2">
 						Name
@@ -55,8 +55,37 @@
 						</select>
 					</div>
 				</div>
+			</form>
+		</div>
+		<div class="col-xs-6">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-default" on-dragAndDropFiles="dropDriversLicense">
+						<div class="panel-heading">
+							Drivers license
+						</div>
+						<div class="panel-body">
+							{{#driversLicenseExists}}
+								{{#!savingDriversLicense}}
+									<img src="{{#savingDriversLicense}}{{else}}./driverslicense/{{customer.customerId}}{{/savingDriversLicense}}" style="max-width: 100%">
+								{{/}}
+							{{else}}
+								<p>Drag image here</p>
+							{{/}}
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="panel panel-default" on-dragAndDropFiles="dropPrescription">
+						<div class="panel-heading">
+							Prescription
+						</div>
+						<div class="panel-body">
+						</div>
+					</div>
+				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 

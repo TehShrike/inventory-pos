@@ -1,11 +1,14 @@
 var makeStateRouter = require('abstract-state-router')
 var makeRactiveRenderer = require('ractive-state-router')
 var socketio = require('socket.io-client')
+var dragAndDropFiles = require('ractive-drag-and-drop-files')
 var fs = require('fs')
 
 var socket = socketio(window.location.host)
+
 var ractiveRenderer = makeRactiveRenderer({
-	decorators: {
+	events: {
+		dragAndDropFiles: dragAndDropFiles
 	}
 })
 

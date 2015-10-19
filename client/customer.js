@@ -2,9 +2,19 @@ var fs = require('fs')
 var Bacon = require('baconjs')
 var observe = require('./observe')
 var makeSavingStream = require('bacon-form-saving')
+var socketStream = require('socket.io-stream')
+var all = require('async-all')
 
 module.exports = function(appContext) {
 	var socket = appContext.socket
+
+	function loadCustomer(customerId, cb) {
+		socket.emit('load customer', customerId, cb)
+	}
+	function driversLicenseExists(customerId, cb) {
+		socket.emit('drivers license exists', customerId, cb)
+	}
+
 	appContext.stateRouter.addState({
 		name: 'app.customer',
 		route: 'customer',
@@ -14,11 +24,11 @@ module.exports = function(appContext) {
 		},
 		resolve: function(data, parameters, cb) {
 			var customerId = parameters.customerId
-			socket.emit('load customer', customerId, function(err, customer) {
-				cb(err, {
-					customer: customer
-				})
-			})
+
+			all({
+				customer: loadCustomer.bind(null, customerId),
+				driversLicenseExists: driversLicenseExists.bind(null, customerId)
+			}, cb)
 		},
 		template: fs.readFileSync('client/customer.html', { encoding: 'utf8' }),
 		activate: function(context) {
@@ -73,6 +83,26 @@ module.exports = function(appContext) {
 				}).forEach(function(property) {
 					ractive.set(property, true)
 				})
+			})
+
+			ractive.on('dropDriversLicense', function(event) {
+				var files = event.files
+				if (files) {
+					ractive.set('savingDriversLicense', true)
+					var file = files[0]
+					var stream = socketStream.createStream()
+
+					socketStream(socket).emit('save drivers license', stream, {
+						customerId: context.parameters.customerId
+					}, function() {
+						ractive.set({
+							driversLicenseExists: true,
+							savingDriversLicense: false
+						})
+					})
+
+					socketStream.createBlobReadStream(file).pipe(stream)
+				}
 			})
 
 		}

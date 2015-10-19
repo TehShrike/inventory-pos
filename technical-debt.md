@@ -6,3 +6,4 @@
 ## User interface
 
 - keyboard control of the customer search interface
+- need a dropdown that works other places in the app
