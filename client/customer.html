@@ -60,34 +60,40 @@
 		<div class="col-xs-6">
 			<div class="row">
 				<div class="col-xs-12">
-					<div class="panel panel-default" on-dragAndDropFiles="dropDriversLicense">
-						<div class="panel-heading">
-							Drivers license
-						</div>
-						<div class="panel-body">
-							{{#driversLicenseExists}}
-								{{#!savingDriversLicense}}
-									<img src="{{#savingDriversLicense}}{{else}}./driverslicense/{{customer.customerId}}{{/savingDriversLicense}}" style="max-width: 100%">
-								{{/}}
-							{{else}}
-								<p>Drag image here</p>
-							{{/}}
-						</div>
-					</div>
+					{{>imageBox { heading: 'Drivers License',
+							exists: driversLicenseExists,
+							saving: savingDriversLicense,
+							dropEvent: 'dropDriversLicense',
+							path: './driverslicense/' } }}
 				</div>
 				<div class="col-xs-12">
-					<div class="panel panel-default" on-dragAndDropFiles="dropPrescription">
-						<div class="panel-heading">
-							Prescription
-						</div>
-						<div class="panel-body">
-						</div>
-					</div>
+					{{>imageBox { heading: 'Prescription',
+							exists: prescriptionExists,
+							saving: savingPrescription,
+							dropEvent: 'dropPrescription',
+							path: './prescription/' } }}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+{{#partial imageBox}}
+	<div class="panel panel-default" on-dragAndDropFiles="{{dropEvent}}">
+		<div class="panel-heading">
+			{{heading}}
+		</div>
+		<div class="panel-body">
+			{{#exists}}
+				{{#!saving}}
+					<img src="{{#saving}}{{else}}{{path}}{{customer.customerId}}{{/saving}}" style="max-width: 100%">
+				{{/}}
+			{{else}}
+				<p>Drag image here</p>
+			{{/}}
+		</div>
+	</div>
+{{/}}
 
 
 {{#partial savingInput}}

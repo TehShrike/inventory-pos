@@ -37,8 +37,19 @@ module.exports = function handleUserConnection(config, socket) {
 			return joinPath(customerDriversLicenseDirectory, customerId)
 		}
 
-		socket.on('drivers license exists', function(customerId, cb) {
-			var filePath = getDriversLicensePath(customerId)
+		function getPath(directory, id) {
+			id = parseInt(id, 10).toString(10)
+			return joinPath(directory, id)
+		}
+
+		socket.on('drivers license exists', checkFileExists.bind(null, customerDriversLicenseDirectory))
+		socket.on('prescription exists', checkFileExists.bind(null, customerPrescriptionDirectory))
+
+		socketStream(socket).on('save drivers license', getFileStreamHandler(customerDriversLicenseDirectory, 'customerId'))
+		socketStream(socket).on('save prescription', getFileStreamHandler(customerPrescriptionDirectory, 'customerId'))
+
+		function checkFileExists(directory, id, cb) {
+			var filePath = getPath(directory, id)
 
 			fs.stat(filePath, function(err, stats) {
 				if (err) {
@@ -47,12 +58,14 @@ module.exports = function handleUserConnection(config, socket) {
 					cb(null, stats.isFile())
 				}
 			})
-		})
+		}
 
-		socketStream(socket).on('save drivers license', function(stream, data, cb) {
-			var filePath = getDriversLicensePath(data.customerId)
-			saveStream({ stream: stream, filePath: filePath }, cb)
-		})
+		function getFileStreamHandler(directory, idKey) {
+			return function(stream, data, cb) {
+				var filePath = getPath(directory, data[idKey])
+				saveStream({ stream: stream, filePath: filePath }, cb)
+			}
+		}
 
 		cb(null, {
 			userId: userId,
