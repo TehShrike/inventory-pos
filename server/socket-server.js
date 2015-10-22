@@ -1,8 +1,10 @@
-var makeCustomerDb = require('./customer-db')
-var saveStream = require('./save-stream-to-file')
 var socketStream = require('socket.io-stream')
-var joinPath = require('path').join
-var fs = require('fs')
+
+var makeCustomerDb = require('./customer-db')
+var fileHelpers = require('./file-helpers')
+
+var getFileStreamHandler = fileHelpers.getFileStreamHandler
+var checkFileExists = fileHelpers.checkFileExists
 
 module.exports = function handleUserConnection(config, socket) {
 	var db = config.db
@@ -32,40 +34,11 @@ module.exports = function handleUserConnection(config, socket) {
 		socket.on('load customer', customerDb.load)
 		socket.on('customer search', customerDb.search)
 
-		function getDriversLicensePath(customerId) {
-			customerId = parseInt(customerId, 10).toString(10)
-			return joinPath(customerDriversLicenseDirectory, customerId)
-		}
-
-		function getPath(directory, id) {
-			id = parseInt(id, 10).toString(10)
-			return joinPath(directory, id)
-		}
-
 		socket.on('drivers license exists', checkFileExists.bind(null, customerDriversLicenseDirectory))
 		socket.on('prescription exists', checkFileExists.bind(null, customerPrescriptionDirectory))
 
 		socketStream(socket).on('save drivers license', getFileStreamHandler(customerDriversLicenseDirectory, 'customerId'))
 		socketStream(socket).on('save prescription', getFileStreamHandler(customerPrescriptionDirectory, 'customerId'))
-
-		function checkFileExists(directory, id, cb) {
-			var filePath = getPath(directory, id)
-
-			fs.stat(filePath, function(err, stats) {
-				if (err) {
-					cb(null, false)
-				} else {
-					cb(null, stats.isFile())
-				}
-			})
-		}
-
-		function getFileStreamHandler(directory, idKey) {
-			return function(stream, data, cb) {
-				var filePath = getPath(directory, data[idKey])
-				saveStream({ stream: stream, filePath: filePath }, cb)
-			}
-		}
 
 		cb(null, {
 			userId: userId,

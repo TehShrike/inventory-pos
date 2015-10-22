@@ -16,7 +16,7 @@
 						Name
 					</label>
 					<div class="col-xs-10">
-						{{>savingInput { column: 'name' }}}
+						{{>savingInput { saving: saving.customer, saved: saved.customer, key: 'name' }}}
 					</div>
 				</div>
 				<div class="form-group {{#saved.customer.driversLicense}}has-success{{/}}">
@@ -24,7 +24,7 @@
 						Drivers License #
 					</label>
 					<div class="col-xs-10">
-						{{>savingInput { column: 'driversLicense' }}}
+						{{>savingInput { saving: saving.customer, saved: saved.customer, key: 'driversLicense' }}}
 					</div>
 				</div>
 				<div class="form-group {{#saved.customer.socialSecurity}}has-success{{/}}">
@@ -32,7 +32,7 @@
 						Social Security #
 					</label>
 					<div class="col-xs-10">
-						{{>savingInput { column: 'socialSecurity' }}}
+						{{>savingInput { saving: saving.customer, saved: saved.customer, key: 'socialSecurity' }}}
 					</div>
 				</div>
 				<div class="form-group {{#saved.customer.phoneNumber}}has-success{{/}}">
@@ -40,7 +40,7 @@
 						Phone #
 					</label>
 					<div class="col-xs-10">
-						{{>savingInput { column: 'phoneNumber' }}}
+						{{>savingInput { saving: saving.customer, saved: saved.customer, key: 'phoneNumber' }}}
 					</div>
 				</div>
 				<div class="form-group {{#saved.customer.customerType}}has-success{{/}}">
@@ -95,10 +95,9 @@
 	</div>
 {{/}}
 
-
 {{#partial savingInput}}
-	<input type="text" class="form-control" value="{{customer[column]}}" readonly="{{saving.customer[column]}}" lazy>
-	{{#saved.customer[column]}}
+	<input type="text" class="form-control" value="{{customer[key]}}" readonly="{{saving[key]}}" lazy>
+	{{#saved[key]}}
 	<i class="fa fa-check form-control-feedback"></i>
-	{{/saved.customer[column]}}
+	{{/saved[key]}}
 {{/partial}}
