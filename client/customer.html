@@ -86,7 +86,7 @@
 		<div class="panel-body">
 			{{#exists}}
 				{{#!saving}}
-					<img src="{{#saving}}{{else}}{{path}}{{customer.customerId}}{{/saving}}" style="max-width: 100%">
+					<img src="{{path}}{{customer.customerId}}#{{Math.random()}}" style="max-width: 100%">
 				{{/}}
 			{{else}}
 				<p>Drag image here</p>
@@ -96,7 +96,12 @@
 {{/}}
 
 {{#partial savingInput}}
-	<input type="text" class="form-control" value="{{customer[key]}}" readonly="{{saving[key]}}" lazy>
+	<input type="text"
+		class="form-control"
+		value="{{customer[key]}}"
+		readonly="{{saving[key]}}"
+		on-change="customer-change:{{key}}"
+		on-focus="customer-focus:{{key}}">
 	{{#saved[key]}}
 	<i class="fa fa-check form-control-feedback"></i>
 	{{/saved[key]}}

@@ -30,7 +30,8 @@ var staticDirectories = [
 	directory.server = ecstatic({
 		root: path.resolve(directory.directory),
 		baseDir: directory.path,
-		gzip: true
+		gzip: true,
+		cache: 'private, max-age=0, no-cache, no-store'
 	})
 	return directory
 })

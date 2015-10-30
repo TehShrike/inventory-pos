@@ -34,21 +34,17 @@ module.exports = function(appContext) {
 		activate: function(context) {
 			var ractive = context.domApi
 
+			ractive.on('customer-focus', function(event, key) {
+				ractive.set('saved.customer.' + key, false)
+			})
+
 			ractive.set('formFeedback', function(key) {
 				if (ractive.get('saved.customer.' + key)) {
 					return 'has-success'
 				}
 			})
 
-			var fields = [ 'name', 'driversLicense', 'socialSecurity', 'phoneNumber', 'customerType' ]
-
-			var allFieldChangesStream = Bacon.mergeAll(fields.map(function(field) {
-				return observe(ractive, 'customer.' + field).map(function(value) {
-					var o = {}
-					o[field] = value
-					return o
-				})
-			}))
+			var allFieldChangesStream = observe(ractive, 'customer', 'customer-change')
 
 			function saveCustomer(customer, cb) {
 				socket.emit('save customer', customer, cb)
@@ -56,15 +52,12 @@ module.exports = function(appContext) {
 
 			allFieldChangesStream.onValue(function(changes) {
 				ractive.set(allProperties(true, prependKeysWith('saving.customer.', changes)))
-
-				// TODO: should set the saved to false when onfocus happens, not on change
-				ractive.set(allProperties(false, prependKeysWith('saved.customer.', changes)))
 			})
 
 			var streams = makeSavingStream(allFieldChangesStream, context.content.customer, 'customerId', saveCustomer)
 
 			streams.newVersionsFromServer.onError(function(err) {
-				console.error(err)
+				throw err
 			})
 
 			streams.newVersionsFromServer.onValue(function(newVersionFromServer) {
@@ -85,42 +78,44 @@ module.exports = function(appContext) {
 				})
 			})
 
-			handleImageDrop({
+			handleImageDrop(ractive, socket, {
+				customerId: context.parameters.customerId
+			}, {
 				domEvent: 'dropDriversLicense',
 				socketEvent: 'save drivers license',
 				savingProperty: 'savingDriversLicense',
 				existsProperty: 'driversLicenseExists'
 			})
 
-			handleImageDrop({
+			handleImageDrop(ractive, socket, {
+				customerId: context.parameters.customerId
+			}, {
 				domEvent: 'dropPrescription',
 				socketEvent: 'save prescription',
 				savingProperty: 'savingPrescription',
 				existsProperty: 'prescriptionExists'
 			})
 
-			function handleImageDrop(options) {
-				ractive.on(options.domEvent, function(event) {
-					var files = event.files
-					if (files) {
-						ractive.set(options.savingProperty, true)
-						var file = files[0]
-						var stream = socketStream.createStream()
+		}
+	})
+}
 
-						socketStream(socket).emit(options.socketEvent, stream, {
-							customerId: context.parameters.customerId
-						}, function() {
-							var toSet = {}
-							toSet[options.existsProperty] = true
-							toSet[options.savingProperty] = false
-							ractive.set(toSet)
-						})
+function handleImageDrop(ractive, socket, emittedObject, options) {
+	ractive.on(options.domEvent, function(event) {
+		var files = event.files
+		if (files) {
+			ractive.set(options.savingProperty, true)
+			var file = files[0]
+			var stream = socketStream.createStream()
 
-						socketStream.createBlobReadStream(file).pipe(stream)
-					}
-				})
-			}
+			socketStream(socket).emit(options.socketEvent, stream, emittedObject, function() {
+				var toSet = {}
+				toSet[options.existsProperty] = true
+				toSet[options.savingProperty] = false
+				ractive.set(toSet)
+			})
 
+			socketStream.createBlobReadStream(file).pipe(stream)
 		}
 	})
 }
