@@ -1,5 +1,4 @@
 var fs = require('fs')
-var Bacon = require('baconjs')
 var observe = require('./observe')
 var makeSavingStream = require('bacon-form-saving')
 var socketStream = require('socket.io-stream')

@@ -1,6 +1,7 @@
 var fs = require('fs')
 var Bacon = require('baconjs')
-var observeRactive = require('./observe')
+var horsey = require('horsey')
+var escapeHtml = require('html-escape')
 
 module.exports = function(appContext) {
 	var socket = appContext.socket
@@ -11,58 +12,82 @@ module.exports = function(appContext) {
 		activate: function(context) {
 			var ractive = context.domApi
 
-			var autocompleteText = observeRactive(ractive, 'autocomplete')
+			var customerSearchInput = ractive.find('.customer-search')
+			var customerSearchForm = ractive.find('.customer-search-form')
 
-			var matchingCustomers = autocompleteText.filter(function(value) {
-					return value.length > 1
-				})
-				.debounce(200)
-				.flatMapLatest(function(value) {
-					return Bacon.fromNodeCallback(socket.emit.bind(socket), 'customer search', value)
-				})
-				.toProperty([])
+			customerSearchInput.focus()
 
-			ractive.on('navigate-to-customer', function(event, customerId) {
-				appContext.stateRouter.go('app.customer', { customerId: customerId })
+			var autocomplete = horsey(customerSearchInput, {
+				form: customerSearchForm,
+				appendTo: customerSearchForm,
+				suggestions: function(value, done) {
+					if (value.length >= 2) {
+						socket.emit('customer search', value, function(err, suggestions) {
+							if (err) {
+								throw err
+							} else {
+								done(suggestions)
+							}
+						})
+					} else {
+						done([])
+					}
+				},
+				filter: function(value, suggestions) {
+					return suggestions
+				},
+				getValue: function(suggestion) {
+					return suggestion
+				},
+				render: function(li, suggestion) {
+					li.innerHTML = escapeHtml(suggestion.name) + customerTypeLabel(suggestion)
+				},
+				set: function(customer) {
+					appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
+				},
+				listClass: 'list-group',
+				selectedClass: 'active',
+				itemClass: 'list-group-item cursor-pointer'
 			})
 
-			matchingCustomers.assign(ractive, 'set', 'matching')
+			function customerTypeLabel(customer) {
+				if (customer.customerType === 'medical') {
+					return '<span class="pull-right light label label-success">Medical</span>'
+				} else if (customer.customerType === 'recreational') {
+					return '<span class="pull-right light label label-info">Recreational</span>'
+				} else {
+					return ''
+				}
+			}
+
+			context.on('destroy', function() {
+				autocomplete.destroy()
+			})
 
 			function saveCustomer(customer, cb) {
 				socket.emit('save customer', customer, cb)
 			}
 
-			var savingMedical = Bacon.fromEvent(ractive, 'new-medical').map(function(event) {
-				return {
-					name: ractive.get('autocomplete'),
-					customerType: 'medical'
-				}
-			}).flatMap(function(newCustomer) {
-				return Bacon.fromNodeCallback(saveCustomer, newCustomer)
-			})
+			handleNewCustomerEvent(Bacon.fromEvent(ractive, 'new-medical'), 'medical')
+			handleNewCustomerEvent(Bacon.fromEvent(ractive, 'new-recreational'), 'recreational')
 
-			savingMedical.onValue(function(customer) {
-				appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
-			})
-			savingMedical.onError(function(err) {
-				console.error(err)
-			})
+			function handleNewCustomerEvent(stream, type) {
+				var saving = stream.map(function(event) {
+					return {
+						name: ractive.get('autocomplete'),
+						customerType: type
+					}
+				}).flatMap(function(newCustomer) {
+					return Bacon.fromNodeCallback(saveCustomer, newCustomer)
+				})
 
-			var savingRecreational = Bacon.fromEvent(ractive, 'new-recreational').map(function(event) {
-				return {
-					name: ractive.get('autocomplete'),
-					customerType: 'recreational'
-				}
-			}).flatMap(function(newCustomer) {
-				return Bacon.fromNodeCallback(saveCustomer, newCustomer)
-			})
-
-			savingRecreational.onValue(function(customer) {
-				appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
-			})
-			savingRecreational.onError(function(err) {
-				console.error(err)
-			})
+				saving.onValue(function(customer) {
+					appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
+				})
+				saving.onError(function(err) {
+					console.error(err)
+				})
+			}
 		}
 	})
 }
