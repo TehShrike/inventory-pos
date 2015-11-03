@@ -1,13 +1,6 @@
 <div class="row">
 	<div class="col-xs-offset-3 col-xs-6">
-		<form onclick="return false" class="customer-search-form">
-			<div class="form-group">
-				<input type="text"
-						class="form-control customer-search"
-						placeholder="Customer name or number"
-						value="{{autocomplete}}">
-			</div>
-		</form>
+		<customerAutocomplete autocomplete="{{autocomplete}}"></customerAutocomplete>
 	</div>
 	<div class="col-xs-3">
 		<button class="btn btn-success" on-click="new-medical">New medical</button>
