@@ -27,6 +27,7 @@
     "dezalgo": "1.0.3",
     "ecstatic": "1.0.0",
     "horsey": "git+https://github.com/TehShrike/horsey.git#features-i-need",
+    "html-escape": "1.0.2",
     "joi": "6.8.1",
     "mannish": "2.1.0",
     "mediator": "0.0.7",
