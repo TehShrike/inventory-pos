@@ -6,10 +6,11 @@ var all = require('async-all')
 
 module.exports = function(appContext) {
 	var socket = appContext.socket
+	var mediator = appContext.mediator
 
 	function getCustomerData(socketEvent, customerId) {
 		return function(cb) {
-			socket.emit(socketEvent, customerId, cb)
+			mediator.publish('emitToServer', socketEvent, customerId, cb)
 		}
 	}
 
@@ -46,7 +47,7 @@ module.exports = function(appContext) {
 			var allFieldChangesStream = observe(ractive, 'customer', 'customer-change')
 
 			function saveCustomer(customer, cb) {
-				socket.emit('save customer', customer, cb)
+				mediator.publish('emitToServer', 'save customer', customer, cb)
 			}
 
 			allFieldChangesStream.onValue(function(changes) {
@@ -117,20 +118,6 @@ function handleImageDrop(ractive, socket, emittedObject, options) {
 			socketStream.createBlobReadStream(file).pipe(stream)
 		}
 	})
-}
-
-function differentKeys(o1, o2) {
-	return set(Object.keys(o1), Object.keys(o2)).filter(function(memo, key) {
-		o1[key] !== o2[key]
-	})
-}
-
-function set(ary1, ary2) {
-	var o = {}
-	ary1.concat(ary2).forEach(function(key) {
-		o[key] = true
-	})
-	return Object.keys(o)
 }
 
 function allProperties(value, o) {

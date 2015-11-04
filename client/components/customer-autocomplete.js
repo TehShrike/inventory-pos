@@ -3,7 +3,7 @@ var Ractive = require('ractive')
 var horsey = require('horsey')
 var escapeHtml = require('html-escape')
 
-module.exports = function createComponent(appContext) {
+module.exports = function createComponent(mediator) {
 	return Ractive.extend({
 		template: fs.readFileSync('client/components/customer-autocomplete.html', { encoding: 'utf8' }),
 		isolated: true,
@@ -20,7 +20,7 @@ module.exports = function createComponent(appContext) {
 				appendTo: customerSearchForm,
 				suggestions: function(value, done) {
 					if (value.length >= 2) {
-						appContext.socket.emit('customer search', value, function(err, suggestions) {
+						mediator.request('emitToServer', 'customer search', value, function(err, suggestions) {
 							if (err) {
 								throw err
 							} else {
@@ -42,7 +42,7 @@ module.exports = function createComponent(appContext) {
 					li.setAttribute('type', 'button')
 				},
 				set: function(customer) {
-					appContext.stateRouter.go('app.customer', { customerId: customer.customerId })
+					ractive.fire('customerSelected', customer)
 				},
 				liElement: 'button',
 				listClass: 'list-group',

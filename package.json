@@ -28,7 +28,7 @@
     "ecstatic": "1.0.0",
     "horsey": "git+https://github.com/TehShrike/horsey.git#features-i-need",
     "joi": "6.8.1",
-    "mannish": "2.0.0",
+    "mannish": "2.1.0",
     "mediator": "0.0.7",
     "mkdirp": "0.5.1",
     "mysql": "2.9.0",
