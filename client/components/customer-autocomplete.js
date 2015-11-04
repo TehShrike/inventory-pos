@@ -13,7 +13,11 @@ module.exports = function createComponent(mediator) {
 			var customerSearchInput = ractive.find('.customer-search')
 			var customerSearchForm = ractive.find('.customer-search-form')
 
-			customerSearchInput.focus()
+			ractive.observe('focus', function(focus) {
+				if (focus) {
+					customerSearchInput.focus()
+				}
+			})
 
 			var autocomplete = horsey(customerSearchInput, {
 				form: customerSearchForm,
