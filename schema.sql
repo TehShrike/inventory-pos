@@ -11,3 +11,13 @@ CREATE TABLE customer (
 	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (customer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE inventory_type (
+	inventory_type_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	name VARCHAR(300) NOT NULL,
+	parent_id INT UNSIGNED NULL,
+	sellable BIT(1) NOT NULL,
+	version INT UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (inventory_type_id),
+	UNIQUE INDEX name (name(200))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,13 +1,14 @@
 var http = require('http')
 var ecstatic = require('ecstatic')
 var socketio = require('socket.io')
-var socketHandler = require('./socket-server')
 var path = require('path')
-var mysql = require('mysql')
 var mannish = require('mannish')
 var parseUrl = require('url').parse
 
-var pool = mysql.createPool({
+var socketHandler = require('./socket-server')
+var connectionPoolFactory = require('./connection-pool-factory')
+
+var pool = connectionPoolFactory({
 	host: '127.0.0.1',
 	user: 'root',
 	password: '',
