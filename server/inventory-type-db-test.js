@@ -4,9 +4,9 @@ var pool = connectionPoolFactory()
 var inventoryTypeDb = require('./inventory-type-db')(pool)
 
 // inventoryTypeDb.save({
-// 	name: 'Shatter',
+// 	name: 'Orange',
 // 	sellable: true,
-// 	parentId: 5,
+// 	parentId: 4,
 // 	version: 0
 // }, function(err, result) {
 // 	err && console.error(err)

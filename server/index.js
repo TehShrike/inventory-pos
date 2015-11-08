@@ -59,7 +59,9 @@ function makeServer() {
 
 	var io = socketio(server)
 
-	io.on('connection', socketHandler.bind(null, config))
+	io.on('connection', function(socket) {
+		socketHandler(config, socket)
+	})
 
 	return server
 }

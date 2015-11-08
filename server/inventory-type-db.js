@@ -35,29 +35,7 @@ module.exports = function customerDb(connection) {
 			saver('inventory_type', { insertSchema: insertSchema, updateSchema: updateSchema, load: loadInventoryType, db: connection }, inventoryType, cb)
 		},
 		load: function(cb) {
-			db.query(connection, q.select(COLUMNS).from(TABLE).orderBy('parent_id ASC, name ASC').build(), function(err, rows) {
-				if (err) {
-					cb(err)
-				} else {
-					var map = {}
-					var topLevelTypes = []
-					rows.forEach(function(inventoryType) {
-						map[inventoryType.inventoryTypeId] = inventoryType
-						inventoryType.children = []
-						if (inventoryType.parentId === null) {
-							topLevelTypes.push(inventoryType)
-						}
-					})
-
-					rows.filter(function(inventoryType) {
-						return inventoryType.parentId !== null
-					}).forEach(function(inventoryType) {
-						map[inventoryType.parentId].children.push(inventoryType)
-					})
-
-					cb(null, topLevelTypes)
-				}
-			})
+			db.query(connection, q.select(COLUMNS).from(TABLE).orderBy('parent_id ASC, name ASC').build(), cb)
 		}
 	}
 }

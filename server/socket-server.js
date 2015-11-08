@@ -1,6 +1,7 @@
 var socketStream = require('socket.io-stream')
 
 var makeCustomerDb = require('./customer-db')
+var makeInventoryTypeDb = require('./inventory-type-db')
 var fileHelpers = require('./file-helpers')
 
 var getFileStreamHandler = fileHelpers.getFileStreamHandler
@@ -24,6 +25,7 @@ module.exports = function handleUserConnection(config, socket) {
 		socket.join(userRoom)
 
 		var customerDb = makeCustomerDb(db)
+		var inventoryTypeDb = makeInventoryTypeDb(db)
 
 		socket.on('save customer', function handler(customer, cb) {
 			customerDb.save(customer, callFunctionBeforeCallbackSync(cb, function(savedCustomer) {
@@ -33,6 +35,14 @@ module.exports = function handleUserConnection(config, socket) {
 
 		socket.on('load customer', customerDb.load)
 		socket.on('customer search', customerDb.search)
+
+		socket.on('load inventory types', inventoryTypeDb.load)
+		socket.on('save inventory type', function(inventoryType, cb) {
+			inventoryTypeDb.save(inventoryType, callFunctionBeforeCallbackSync(cb, function(savedInventoryType) {
+				socket.emit('saved inventory type', savedInventoryType)
+				broadcastToAccount('saved inventory type', savedInventoryType)
+			}))
+		})
 
 		socket.on('drivers license exists', checkFileExists.bind(null, customerDriversLicenseDirectory))
 		socket.on('prescription exists', checkFileExists.bind(null, customerPrescriptionDirectory))

@@ -1,0 +1,51 @@
+<ol class="breadcrumb">
+	{{#ancestors}}
+		<li decorator="active:'app.customer-search','inventoryTypeId:{{inventoryTypeId}}'">
+			<a href="{{ makePath('app.configuration.inventory-type', { inventoryTypeId: inventoryTypeId }) }}">
+				{{name}}
+			</a>
+		</li>
+	{{/ancestors}}
+</ol>
+
+<div class="row">
+	<div class="col-xs-4">
+		{{#errorMessage}}
+			<div class="alert alert-danger">
+				{{errorMessage}}
+			</div>
+		{{/}}
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-6">
+		<table class="table table-striped table-hover">
+			<tbody>
+				{{#inventoryTypesAtThisLevel}}
+					<tr>
+						<td>
+							<a href="{{ makePath('app.configuration.inventory-type', { inventoryTypeId: inventoryTypeId }) }}">
+								{{name}}
+							</a>
+						</td>
+						<td>
+							{{#children.length > 0}}
+								<span class="badge">{{children.length}}</span>
+							{{/}}
+						</td>
+					</tr>
+				{{/inventoryTypesAtThisLevel}}
+			</tbody>
+		</table>
+		{{#showingAddNewTypeInput}}
+			<input type="text"
+				class="form-control add-new-type-input"
+				value="{{newInventoryTypeName}}"
+				readonly="{{savingNewInventoryType}}"
+				on-change="create-new-inventory-type:{{newInventoryTypeName}}">
+		{{else}}
+			<button class="btn btn-primary" on-click="add-new-type">Add new type...</button>
+		{{/if}}
+	</div>
+</div>
