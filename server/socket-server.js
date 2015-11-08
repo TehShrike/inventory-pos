@@ -28,24 +28,24 @@ module.exports = function handleUserConnection(config, socket) {
 		var inventoryTypeDb = makeInventoryTypeDb(db)
 
 		socket.on('save customer', function handler(customer, cb) {
-			customerDb.save(customer, callFunctionBeforeCallbackSync(cb, function(savedCustomer) {
+			customerDb.save(customer, callFunctionBeforeCallbackSync(serializeErrorForCallback(cb), function(savedCustomer) {
 				broadcastToAccount('saved customer', savedCustomer)
 			}))
 		})
 
-		socket.on('load customer', customerDb.load)
-		socket.on('customer search', customerDb.search)
+		socket.on('load customer', serializeErrorPassedToLastCallback(customerDb.load))
+		socket.on('customer search', serializeErrorPassedToLastCallback(customerDb.search))
 
-		socket.on('load inventory types', inventoryTypeDb.load)
+		socket.on('load inventory types', serializeErrorPassedToLastCallback(inventoryTypeDb.load))
 		socket.on('save inventory type', function(inventoryType, cb) {
-			inventoryTypeDb.save(inventoryType, callFunctionBeforeCallbackSync(cb, function(savedInventoryType) {
+			inventoryTypeDb.save(inventoryType, callFunctionBeforeCallbackSync(serializeErrorForCallback(cb), function(savedInventoryType) {
 				socket.emit('saved inventory type', savedInventoryType)
 				broadcastToAccount('saved inventory type', savedInventoryType)
 			}))
 		})
 
-		socket.on('drivers license exists', checkFileExists.bind(null, customerDriversLicenseDirectory))
-		socket.on('prescription exists', checkFileExists.bind(null, customerPrescriptionDirectory))
+		socket.on('drivers license exists', serializeErrorPassedToLastCallback(checkFileExists.bind(null, customerDriversLicenseDirectory)))
+		socket.on('prescription exists', serializeErrorPassedToLastCallback(checkFileExists.bind(null, customerPrescriptionDirectory)))
 
 		socketStream(socket).on('save drivers license', getFileStreamHandler(customerDriversLicenseDirectory, 'customerId'))
 		socketStream(socket).on('save prescription', getFileStreamHandler(customerPrescriptionDirectory, 'customerId'))
@@ -56,6 +56,39 @@ module.exports = function handleUserConnection(config, socket) {
 		})
 	})
 
+}
+
+function serializeErrorPassedToLastCallback(fn) {
+	return function() {
+		var args = []
+		for (var i = 0; i < arguments.length; ++i) {
+			var finalArgCallback = (i === arguments.length - 1) && typeof arguments[arguments.length - 1] === 'function'
+			args.push(finalArgCallback ? serializeErrorForCallback(arguments[i]) : arguments[i])
+		}
+		fn.apply(null, args)
+	}
+}
+
+function serializeErrorForCallback(cb) {
+	return function(err) {
+		var args = []
+
+		if (err) {
+			var newErrorObject = {}
+			Object.getOwnPropertyNames(err).forEach(function(key) {
+				newErrorObject[key] = err[key]
+			})
+			args.push(newErrorObject)
+		} else {
+			args.push(null)
+		}
+
+		for (var i = 1; i < arguments.length; ++i) {
+			args.push(arguments[i])
+		}
+
+		cb.apply(null, args)
+	}
 }
 
 function callFunctionBeforeCallbackSync(cb, fn) {

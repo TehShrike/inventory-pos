@@ -48,9 +48,7 @@ module.exports = function(appContext) {
 	load()
 
 	socket.on('saved inventory type', function() {
-		console.log('saved inventory type.')
 		if (!callWhenLoaded.isLoading()) {
-			console.log('reloading...')
 			load()
 		}
 	})
