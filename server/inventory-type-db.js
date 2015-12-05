@@ -6,13 +6,14 @@ var Joi = require('joi')
 var q = require('sql-concat')
 
 var TABLE = 'inventory_type'
-var COLUMNS = ['inventory_type_id', 'name', 'parent_id', 'sellable']
+var COLUMNS = ['inventory_type_id', 'name', 'parent_inventory_type_id', 'sellable', 'plant', 'version']
 
 var joiObject = {
 	inventory_type_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	name: Joi.string().max(300).invalid(null),
-	parent_id: Joi.number().integer().max(4294967295).min(0).allow(null),
+	parent_inventory_type_id: Joi.number().integer().max(4294967295).min(0).allow(null),
 	sellable: Joi.boolean().invalid(null),
+	plant: Joi.boolean().invalid(null),
 	version: Joi.number().integer().max(4294967295).min(0).invalid(null)
 }
 
@@ -35,7 +36,7 @@ module.exports = function customerDb(connection) {
 			saver('inventory_type', { insertSchema: insertSchema, updateSchema: updateSchema, load: loadInventoryType, db: connection }, inventoryType, cb)
 		},
 		load: function(cb) {
-			db.query(connection, q.select(COLUMNS).from(TABLE).orderBy('parent_id ASC, name ASC').build(), cb)
+			db.query(connection, q.select(COLUMNS).from(TABLE).orderBy('parent_inventory_type_id ASC, name ASC').build(), cb)
 		}
 	}
 }

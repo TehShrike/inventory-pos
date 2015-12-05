@@ -3,7 +3,7 @@ var Ractive = require('ractive')
 var horsey = require('horsey')
 var escapeHtml = require('html-escape')
 
-module.exports = function createComponent(mediator) {
+module.exports = function createCustomerAutocompleteComponent(mediator) {
 	return Ractive.extend({
 		template: fs.readFileSync('client/components/customer-autocomplete.html', { encoding: 'utf8' }),
 		isolated: true,

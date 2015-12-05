@@ -1,8 +1,8 @@
 var fs = require('fs')
-var observe = require('./observe')
 var makeSavingStream = require('bacon-form-saving')
 var socketStream = require('socket.io-stream')
 var all = require('async-all')
+import { observe, allProperties, prependKeysWith, handleSavingStreams } from '../../observe'
 
 module.exports = function(appContext) {
 	var socket = appContext.socket
@@ -30,7 +30,7 @@ module.exports = function(appContext) {
 				prescriptionExists: getCustomerData('prescription exists', customerId)
 			}, cb)
 		},
-		template: fs.readFileSync('client/customer.html', { encoding: 'utf8' }),
+		template: fs.readFileSync('client/states/customer/customer.html', { encoding: 'utf8' }),
 		activate: function(context) {
 			var ractive = context.domApi
 
@@ -56,27 +56,7 @@ module.exports = function(appContext) {
 
 			var streams = makeSavingStream(allFieldChangesStream, context.content.customer, 'customerId', saveCustomer)
 
-			streams.newVersionsFromServer.onError(function(err) {
-				throw err
-			})
-
-			streams.newVersionsFromServer.onValue(function(newVersionFromServer) {
-				ractive.set(prependKeysWith('customer.', newVersionFromServer))
-			})
-
-			streams.propertiesSavedAndGotBackFromServer.onValue(function(newlySavedProperties) {
-				newlySavedProperties.map(function(property) {
-					return 'saving.customer.' + property
-				}).forEach(function(property) {
-					ractive.set(property, false)
-				})
-
-				newlySavedProperties.map(function(property) {
-					return 'saved.customer.' + property
-				}).forEach(function(property) {
-					ractive.set(property, true)
-				})
-			})
+			handleSavingStreams(streams, ractive, 'customer')
 
 			handleImageDrop(ractive, socket, {
 				customerId: context.parameters.customerId
@@ -120,16 +100,3 @@ function handleImageDrop(ractive, socket, emittedObject, options) {
 	})
 }
 
-function allProperties(value, o) {
-	return Object.keys(o).reduce(function(memo, key) {
-		memo[key] = value
-		return memo
-	}, {})
-}
-
-function prependKeysWith(str, o) {
-	return Object.keys(o).reduce(function(memo, key) {
-		memo[str + key] = o[key]
-		return memo
-	}, {})
-}

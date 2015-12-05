@@ -15,16 +15,16 @@ module.exports = function(appContext) {
 		rows.forEach(function(inventoryType) {
 			mapOfIdsToTypes[inventoryType.inventoryTypeId] = inventoryType
 			inventoryType.children = []
-			if (inventoryType.parentId === null) {
+			if (inventoryType.parentInventoryTypeId === null) {
 				topLevelTypes.push(inventoryType)
 			}
 		})
 
 		rows.filter(function(inventoryType) {
-			return inventoryType.parentId !== null
+			return inventoryType.parentInventoryTypeId !== null
 		}).forEach(function(inventoryType) {
-			if (inventoryType.parentId !== null) {
-				mapOfIdsToTypes[inventoryType.parentId].children.push(inventoryType)
+			if (inventoryType.parentInventoryTypeId !== null) {
+				mapOfIdsToTypes[inventoryType.parentInventoryTypeId].children.push(inventoryType)
 			}
 		})
 	}
@@ -76,8 +76,8 @@ module.exports = function(appContext) {
 			if (mapOfIdsToTypes[inventoryTypeId]) {
 				var current = mapOfIdsToTypes[inventoryTypeId]
 				var ancestors = [ current ]
-				while (current.parentId) {
-					current = mapOfIdsToTypes[current.parentId]
+				while (current.parentInventoryTypeId) {
+					current = mapOfIdsToTypes[current.parentInventoryTypeId]
 					ancestors.push(current)
 				}
 				cb(null, ancestors.reverse())

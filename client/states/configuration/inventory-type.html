@@ -1,0 +1,32 @@
+<tr>
+	<td>
+		<a href="{{ makePath('app.configuration.inventory-type', { inventoryTypeId: inventoryType.inventoryTypeId }) }}">
+			{{inventoryType.name}}
+		</a>
+	</td>
+	<td>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox"
+					checked="{{inventoryType.sellable}}"
+					on-change="inventory-type-change:sellable">
+				Sellable
+			</label>
+		</div>
+	</td>
+	<td>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox"
+					checked="{{inventoryType.plant}}"
+					on-change="inventory-type-change:plant">
+				Plant
+			</label>
+		</div>
+	</td>
+	<td>
+		{{#inventoryType.children.length > 0}}
+			<span class="badge">{{inventoryType.children.length}}</span>
+		{{/}}
+	</td>
+</tr>

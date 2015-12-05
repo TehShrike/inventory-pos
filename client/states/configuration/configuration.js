@@ -1,6 +1,6 @@
 var fs = require('fs')
-var Bacon = require('baconjs')
 var all = require('async-all')
+var inventoryTypeComponent = require('./inventory-type')
 
 module.exports = function(appContext) {
 	var mediator = appContext.mediator
@@ -9,13 +9,18 @@ module.exports = function(appContext) {
 		name: 'app.configuration',
 		route: 'config',
 		defaultChild: 'inventory-type',
-		template: fs.readFileSync('client/configuration.html', { encoding: 'utf8' })
+		template: fs.readFileSync('client/states/configuration/configuration.html', { encoding: 'utf8' })
 	})
 
 	appContext.stateRouter.addState({
 		name: 'app.configuration.inventory-type',
 		route: 'inventorytype/:inventoryTypeId(\\d+)?',
-		template: fs.readFileSync('client/inventory-type.html', { encoding: 'utf8' }),
+		template: {
+			template: fs.readFileSync('client/states/configuration/inventory-type-list.html', { encoding: 'utf8' }),
+			components: {
+				inventoryType: inventoryTypeComponent(appContext.mediator)
+			}
+		},
 		resolve: function(data, parameters, cb) {
 			all({
 				inventoryTypesAtThisLevel: function(cb) {
@@ -56,8 +61,9 @@ module.exports = function(appContext) {
 
 				var newInventoryType = {
 					name: name,
-					parentId: context.parameters.inventoryTypeId || null,
+					parentInventoryTypeId: context.parameters.inventoryTypeId || null,
 					sellable: typeof parent.sellable === 'boolean' ? parent.sellable : true,
+					plant: typeof parent.plant === 'boolean' ? parent.plant : false,
 					version: 0
 				}
 

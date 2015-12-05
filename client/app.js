@@ -28,9 +28,9 @@ var context = {
 	mediator: mannish()
 }
 
-require('./customer-search')(context)
-require('./customer')(context)
-require('./configuration')(context)
+require('./states/customer-search/customer-search')(context)
+require('./states/customer/customer')(context)
+require('./states/configuration/configuration')(context)
 
 var initializeEmitToServerService = require('./services/emit-to-server')
 var initializeGoToStateService = require('./services/go-to-state')

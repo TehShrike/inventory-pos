@@ -6,7 +6,7 @@ var inventoryTypeDb = require('./inventory-type-db')(pool)
 // inventoryTypeDb.save({
 // 	name: 'Orange',
 // 	sellable: true,
-// 	parentId: 4,
+// 	parentInventoryTypeId: 4,
 // 	version: 0
 // }, function(err, result) {
 // 	err && console.error(err)

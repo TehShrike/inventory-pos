@@ -21,3 +21,17 @@ CREATE TABLE inventory_type (
 	PRIMARY KEY (inventory_type_id),
 	UNIQUE INDEX name (name(200))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE inventory_type
+	CHANGE COLUMN parent_id parent_inventory_type_id INT UNSIGNED NULL;
+
+ALTER TABLE inventory_type
+	ADD COLUMN plant BIT(1) NOT NULL DEFAULT 0;
+
+CREATE TABLE inventory (
+	inventory_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	inventory_type_id INT UNSIGNED NOT NULL,
+	quantity INT UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (inventory_id),
+	INDEX inventory_type (inventory_type_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
