@@ -22,14 +22,14 @@ module.exports = function(appContext) {
 			})
 
 			function saveCustomer(customer, cb) {
-				mediator.request('emitToServer', customer, cb)
+				mediator.request('emitToServer', 'save customer', customer, cb)
 			}
 
 			handleNewCustomerEvent(Bacon.fromEvent(ractive, 'new-medical'), 'medical')
 			handleNewCustomerEvent(Bacon.fromEvent(ractive, 'new-recreational'), 'recreational')
 
 			function handleNewCustomerEvent(stream, type) {
-				var saving = stream.map(function(event) {
+				var saving = stream.map(function() {
 					return {
 						name: ractive.get('autocomplete'),
 						customerType: type

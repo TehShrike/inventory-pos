@@ -56,7 +56,7 @@ module.exports = function(appContext) {
 				ractive.find('.add-new-type-input').focus()
 			})
 
-			ractive.on('create-new-inventory-type', function(event, name) {
+			ractive.on('create-new-inventory-type', function(name) {
 				var parent = context.content.ancestors[context.content.ancestors.length - 1]
 
 				var newInventoryType = {

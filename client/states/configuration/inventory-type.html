@@ -9,7 +9,7 @@
 			<label>
 				<input type="checkbox"
 					checked="{{inventoryType.sellable}}"
-					on-change="inventory-type-change:sellable">
+					on-change="fire('inventory-type-change', 'sellable')">
 				Sellable
 			</label>
 		</div>
@@ -19,7 +19,7 @@
 			<label>
 				<input type="checkbox"
 					checked="{{inventoryType.plant}}"
-					on-change="inventory-type-change:plant">
+					on-change="fire('inventory-type-change', 'plant')">
 				Plant
 			</label>
 		</div>

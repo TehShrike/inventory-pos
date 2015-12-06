@@ -7,7 +7,7 @@ export function observe(ractive, objectKeypath, eventName) {
 	}
 
 	return Bacon.fromBinder(function(sink) {
-		ractive.on(eventName, function(event, key) {
+		ractive.on(eventName, function(key) {
 			var keypath = objectKeypath + '.' + key
 
 			sink({

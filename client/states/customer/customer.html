@@ -100,8 +100,8 @@
 		class="form-control"
 		value="{{customer[key]}}"
 		readonly="{{saving[key]}}"
-		on-change="customer-change:{{key}}"
-		on-focus="customer-focus:{{key}}">
+		on-change="fire('customer-change', key)"
+		on-focus="fire('customer-focus', key)">
 	{{#saved[key]}}
 	<i class="fa fa-check form-control-feedback"></i>
 	{{/saved[key]}}

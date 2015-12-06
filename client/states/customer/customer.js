@@ -34,7 +34,7 @@ module.exports = function(appContext) {
 		activate: function(context) {
 			var ractive = context.domApi
 
-			ractive.on('customer-focus', function(event, key) {
+			ractive.on('customer-focus', function(key) {
 				ractive.set('saved.customer.' + key, false)
 			})
 
