@@ -35,8 +35,20 @@ module.exports = function customerDb(connection) {
 		save: function saveInventoryType(inventoryType, cb) {
 			saver('inventory_type', { insertSchema: insertSchema, updateSchema: updateSchema, load: loadInventoryType, db: connection }, inventoryType, cb)
 		},
-		load: function(cb) {
-			db.query(connection, q.select(COLUMNS).from(TABLE).orderBy('parent_inventory_type_id ASC, name ASC').build(), cb)
+		load: function(queryMap, cb) {
+			if (typeof cb !== 'function') {
+				cb = queryMap
+				queryMap = null
+			}
+			var query = q.select(COLUMNS).from(TABLE)
+
+			if (queryMap) {
+				query = queryMap(query)
+			}
+
+			query = query.orderBy('parent_inventory_type_id ASC, name ASC')
+
+			db.query(connection, query.build(), cb)
 		}
 	}
 }
