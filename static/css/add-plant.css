@@ -1,7 +1,7 @@
-.add-plant-container .add-plant-row {
+.add-plant-container .row {
 	margin-bottom: 10px;
 }
 
 .add-plant-container .inventory-type-buttons .btn {
-	height: 200px;
+	height: 100px;
 }

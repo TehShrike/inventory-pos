@@ -17,12 +17,11 @@ module.exports = function(config, socket, broadcast) {
 	})
 
 	socket.on('load top level plants', serializeErrorPassedToLastCallback(function(cb) {
-		inventoryTypeDb.load(q => q.where('parent_inventory_type_id', null)
-			.where('plant', true), cb)
+		inventoryTypeDb.load(q => q.where('parent_inventory_type_id', null).where('plant', true), cb)
 	}))
 
-	socket.on('load child plants', serializeErrorPassedToLastCallback(function(cb) {
-		inventoryTypeDb.load(q => q.where('parent_inventory_type_id', null)
+	socket.on('load child plants', serializeErrorPassedToLastCallback(function(inventoryTypeId, cb) {
+		inventoryTypeDb.load(q => q.where('parent_inventory_type_id', inventoryTypeId)
 			.where('plant', true), cb)
 	}))
 

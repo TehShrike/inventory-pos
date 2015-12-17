@@ -1,5 +1,4 @@
 var fs = require('fs')
-var Bacon = require('baconjs')
 var all = require('async-all')
 
 module.exports = function(appContext) {
@@ -8,9 +7,12 @@ module.exports = function(appContext) {
 	appContext.stateRouter.addState({
 		name: 'app.add-plant',
 		route: 'add-plant',
-		parameters: ['inventoryTypeId'],
+		querystringParameters: ['inventoryTypeId'],
 		template: {
-			template: fs.readFileSync('client/states/add-plant/add-plant.html', { encoding: 'utf8' })
+			template: fs.readFileSync('client/states/add-plant/add-plant.html', { encoding: 'utf8' }),
+			data: {
+				newInventoryTag: ''
+			}
 		},
 		resolve: function(data, parameters, cb) {
 			all({
@@ -20,13 +22,18 @@ module.exports = function(appContext) {
 					} else {
 						mediator.publish('emitToServer', 'load top level plants', cb)
 					}
-				}
+				},
+				currentInventoryType: cb => parameters.inventoryTypeId ? mediator.publish('getInventoryType', parameters.inventoryTypeId, cb) : cb(null, null)
 			}, cb)
 		},
 		activate: function(context) {
 			var ractive = context.domApi
 
 			ractive.set('buttonColumns', buttonColumnsPerInventoryTypeCount(context.content.plantInventoryTypes.length))
+
+			ractive.on('create-new-inventory', function(tag) {
+				console.log('adding', tag)
+			})
 		}
 	})
 }
