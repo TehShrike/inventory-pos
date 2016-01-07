@@ -1,4 +1,4 @@
-var makeInventoryTypeDb = require('./inventory-type-db')
+var makeInventoryTypeDb = require('./db/inventory-type-db')
 var socketServerUtil = require('./socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback

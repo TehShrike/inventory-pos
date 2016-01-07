@@ -1,4 +1,4 @@
-var connectionPoolFactory = require('./connection-pool-factory')
+var connectionPoolFactory = require('../connection-pool-factory')
 var pool = connectionPoolFactory()
 
 var inventoryTypeDb = require('./inventory-type-db')(pool)
