@@ -1,5 +1,5 @@
-var serializeUtil = require('./socket-server-util')
-var fileHelpers = require('./file-helpers')
+var serializeUtil = require('socket-server-util')
+var fileHelpers = require('file-helpers')
 var socketStream = require('socket.io-stream')
 
 var serializeErrorPassedToLastCallback = serializeUtil.serializeErrorPassedToLastCallback

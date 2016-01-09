@@ -31,7 +31,8 @@ ALTER TABLE inventory_type
 
 CREATE TABLE strain (
 	strain_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	name VARCHAR(50) NOT NULL
+	name VARCHAR(50) NOT NULL,
+	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (strain_id),
 	UNIQUE KEY name (name)
 ) ENGINE=InnoDB;
@@ -43,6 +44,7 @@ CREATE TABLE plant (
 	strain_id INT UNSIGNED NOT NULL,
 	room_id INT UNSIGNED NOT NULL,
 	growth_phase ENUM('immature','vegetative','flowering','harvested','packaged') NOT NULL,
+	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (plant_id),
 	UNIQUE KEY tag (tag_scope, tag_number),
 	KEY strain (strain_id),
@@ -75,6 +77,7 @@ CREATE TABLE harvest (
 	harvest_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	started DATETIME NOT NULL,
 	ended DATETIME,
+	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (harvest_id)
 ) ENGINE=InnoDB;
 
@@ -104,6 +107,7 @@ CREATE TABLE room (
 	room_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	identifier VARCHAR(50) NOT NULL,
 	name VARCHAR(50) NOT NULL,
+	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (room_id),
 	UNIQUE KEY identifier (identifier),
 	UNIQUE KEY name (name)
@@ -118,6 +122,7 @@ CREATE TABLE inventory (
 	quantity DECIMAL (12,5) NOT NULL DEFAULT 0,
 	package_id INT UNSIGNED NULL,
 	room_id INT UNSIGNED,
+	version INT UNSIGNED NOT NULL,
 	PRIMARY KEY (inventory_id),
 	UNIQUE INDEX package (package_id),
 	INDEX inventory_type (inventory_type_id),
@@ -136,12 +141,12 @@ CREATE TABLE inventory_room_move (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE inventory_quantity_transfer (
-	package_content_transfer_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	inventory_quantity_transfer_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	from_inventory_id INT UNSIGNED NOT NULL,
-	from_unit unit ENUM('each', 'ounce') NOT NULL,
+	from_unit ENUM('each', 'ounce') NOT NULL,
 	from_quantity DECIMAL (12,5) NOT NULL,
 	to_inventory_id INT UNSIGNED NOT NULL,
-	to_unit unit ENUM('each', 'ounce') NOT NULL,
+	to_unit ENUM('each', 'ounce') NOT NULL,
 	to_quantity DECIMAL (12,5) NOT NULL,
-	PRIMARY KEY (package_weight_transfer_id)
+	PRIMARY KEY (inventory_quantity_transfer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

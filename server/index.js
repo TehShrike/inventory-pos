@@ -6,7 +6,7 @@ var mannish = require('mannish')
 var parseUrl = require('url').parse
 
 var socketHandler = require('./socket-server')
-var connectionPoolFactory = require('./connection-pool-factory')
+var connectionPoolFactory = require('connection-pool-factory')
 
 var pool = connectionPoolFactory({
 	host: '127.0.0.1',

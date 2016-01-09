@@ -1,5 +1,5 @@
-var makeCustomerDb = require('./db/customer-db')
-var serializeUtil = require('./socket-server-util')
+var makeCustomerDb = require('db/customer-db')
+var serializeUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = serializeUtil.serializeErrorPassedToLastCallback
 var callFunctionBeforeCallbackSync = serializeUtil.callFunctionBeforeCallbackSync

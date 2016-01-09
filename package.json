@@ -29,7 +29,7 @@
     "ecstatic": "1.0.0",
     "horsey": "git+https://github.com/TehShrike/horsey.git#features-i-need",
     "html-escape": "1.0.2",
-    "joi": "6.8.1",
+    "joi": "7.1.0",
     "mannish": "2.1.0",
     "mediator": "0.0.7",
     "mkdirp": "0.5.1",
@@ -51,6 +51,7 @@
     "browserify": "12.0.1",
     "nodemon": "1.8.1",
     "refreshify": "0.0.2",
+    "tape": "4.4.0",
     "watchify": "3.6.1"
   }
 }
