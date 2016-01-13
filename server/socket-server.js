@@ -1,6 +1,6 @@
-var socketCustomer = require('./socket-customer')
-var socketFile = require('./socket-file')
-var socketInventoryType = require('./socket-inventory-type')
+var socketCustomer = require('socket-api/socket-customer')
+var socketFile = require('socket-api/socket-file')
+var socketInventoryType = require('socket-api/socket-inventory-type')
 
 module.exports = function handleUserConnection(config, socket, broadcast) {
 	socket.on('authenticate', function(userId, cb) {
