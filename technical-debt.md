@@ -4,6 +4,7 @@
 - customer search won't scale past 10k customers
 - need a CSS compilation step (SASS?)
 - no concept of "facilities" anywhere
+- have accounts be on different socket.io endpoints
 
 ## User interface
 

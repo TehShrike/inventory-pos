@@ -1,6 +1,9 @@
-var socketCustomer = require('socket-api/socket-customer')
-var socketFile = require('socket-api/socket-file')
-var socketInventoryType = require('socket-api/socket-inventory-type')
+var socketHandlers = [
+	'socket-customer',
+	'socket-file',
+	'socket-inventory-type',
+	'socket-room'
+].map(str => 'socket-api/' + str).map(require)
 
 module.exports = function handleUserConnection(config, socket, broadcast) {
 	socket.on('authenticate', function(userId, cb) {
@@ -14,12 +17,6 @@ module.exports = function handleUserConnection(config, socket, broadcast) {
 
 		socket.join(accountRoom)
 		socket.join(userRoom)
-
-		var socketHandlers = [
-			socketCustomer,
-			socketFile,
-			socketInventoryType
-		]
 
 		socketHandlers.forEach(fn => fn(config, socket, broadcast))
 
