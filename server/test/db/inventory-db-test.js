@@ -5,11 +5,11 @@ var inventoryDb = require('db/inventory-db')(pool)
 
 inventoryDb.save({
 	inventoryId: 1,
-	inventory_type_id: 13,
+	inventory_type_id: 14,
 	quantity: 3,
 	package_id: null,
-	room_id: 1,
-	version: 1
+	room_id: 2,
+	version: 2
 }, function(err, result) {
 	if (err) {
 		console.log(err.message || err)
