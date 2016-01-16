@@ -52,12 +52,12 @@ CREATE TABLE plant (
 ) ENGINE=InnoDB;
 
 CREATE TABLE plant_move (
-	plant_change_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	plant_move_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	plant_id INT UNSIGNED NOT NULL,
 	date DATETIME NOT NULL,
 	from_room_id INT UNSIGNED NOT NULL,
 	to_room_id INT UNSIGNED NOT NULL,
-	PRIMARY KEY (plant_change_id),
+	PRIMARY KEY (plant_move_id),
 	KEY plant (plant_id),
 	KEY from_room (from_room_id),
 	KEY to_room (to_room_id)

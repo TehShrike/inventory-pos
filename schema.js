@@ -114,7 +114,7 @@
 }
 // plant_move
 {
-	plant_change_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
+	plant_move_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	plant_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	date: Joi.date().invalid(null),
 	from_room_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
