@@ -67,6 +67,8 @@ function customerTypeLabel(customer) {
 		return '<span class="pull-right light label label-success">Medical</span>'
 	} else if (customer.customerType === 'recreational') {
 		return '<span class="pull-right light label label-info">Recreational</span>'
+	} else if (customer.customerType === 'wholesale') {
+		return '<span class="pull-right light label label-default">Wholesale</span>'
 	} else {
 		return ''
 	}
