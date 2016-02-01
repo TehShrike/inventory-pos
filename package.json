@@ -34,6 +34,7 @@
     "mediator": "0.0.7",
     "mkdirp": "0.5.1",
     "mysql": "2.9.0",
+    "ractive": "^0.7.3",
     "ractive-drag-and-drop-files": "~1.0.0",
     "ractive-state-router": "~5.2.0",
     "snakeize": "0.1.0",
@@ -52,6 +53,7 @@
     "nodemon": "1.8.1",
     "refreshify": "0.0.2",
     "tape": "4.4.0",
+    "uglify-js": "^2.6.1",
     "watchify": "3.6.1"
   }
 }
