@@ -1,7 +1,8 @@
 var fs = require('fs')
 var all = require('async-all')
+import { switchForNamedArgs, makeReducer } from 'action-helpers.js'
 
-module.exports = function(appContext) {
+export default function(appContext) {
 	var mediator = appContext.mediator
 
 	appContext.stateRouter.addState({
@@ -13,6 +14,14 @@ module.exports = function(appContext) {
 			data: {
 				newInventoryTag: ''
 			}
+		},
+		data: {
+			reducer: makeReducer({
+				SCAN_PLANT: (state, action) => state
+			}),
+			afterAction: switchForNamedArgs({
+
+			})
 		},
 		resolve: function(data, parameters, cb) {
 			all({

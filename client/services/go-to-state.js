@@ -1,3 +1,3 @@
-module.exports = function(appContext) {
-	appContext.mediator.provide('goToState', appContext.stateRouter.go)
+module.exports = function({ mediator, stateRouter}) {
+	mediator.provide('goToState', stateRouter.go)
 }
