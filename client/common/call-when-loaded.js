@@ -1,4 +1,4 @@
-module.exports = function() {
+export default function() {
 	var isLoaded = false
 	var toCall = []
 

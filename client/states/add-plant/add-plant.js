@@ -1,18 +1,15 @@
-var fs = require('fs')
-var all = require('async-all')
 import { switchForNamedArgs, makeReducer } from 'action-helpers.js'
 import { combineReducers } from 'redux'
-import { reducer as addPlantReducer } from '../../documents/add-plant.js'
+import { addPlantReducer as reducer } from '../../documents/add-plant.js'
+import template from './add-plant.html'
 
-export default function(appContext) {
-	var mediator = appContext.mediator
-
-	appContext.stateRouter.addState({
+export default function({ stateRouter }) {
+	stateRouter.addState({
 		name: 'app.add-plant',
 		route: 'add-plant',
 		querystringParameters: ['inventoryTypeId'],
 		template: {
-			template: fs.readFileSync('client/states/add-plant/add-plant.html', { encoding: 'utf8' }),
+			template: template,
 			twoway: false
 		},
 		data: {

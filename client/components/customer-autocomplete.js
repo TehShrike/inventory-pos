@@ -1,11 +1,11 @@
-var fs = require('fs')
-var Ractive = require('ractive')
-var horsey = require('horsey')
-var escapeHtml = require('html-escape')
+import Ractive from 'ractive'
+import horsey from 'horsey'
+import escapeHtml from 'html-escape'
+import customerAutocompleteTemplate from './customer-autocomplete.html'
 
-module.exports = function createCustomerAutocompleteComponent(mediator) {
+export default function createCustomerAutocompleteComponent(mediator) {
 	return Ractive.extend({
-		template: fs.readFileSync('client/components/customer-autocomplete.html', { encoding: 'utf8' }),
+		template: customerAutocompleteTemplate,
 		isolated: true,
 		oncomplete: function() {
 			var ractive = this

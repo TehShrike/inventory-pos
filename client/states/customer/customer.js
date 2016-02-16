@@ -1,10 +1,10 @@
-var fs = require('fs')
-var makeSavingStream = require('bacon-form-saving')
-var socketStream = require('socket.io-stream')
-var all = require('async-all')
+import makeSavingStream from 'bacon-form-saving'
+import socketStream from 'socket.io-stream'
+import all from 'async-all'
 import { observe, allProperties, prependKeysWith, handleSavingStreams } from '../../observe.js'
+import template from './customer.html'
 
-module.exports = function(appContext) {
+export default function(appContext) {
 	var socket = appContext.socket
 	var mediator = appContext.mediator
 
@@ -30,7 +30,7 @@ module.exports = function(appContext) {
 				prescriptionExists: getCustomerData('prescription exists', customerId)
 			}, cb)
 		},
-		template: fs.readFileSync('client/states/customer/customer.html', { encoding: 'utf8' }),
+		template,
 		activate: function(context) {
 			var ractive = context.domApi
 

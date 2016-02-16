@@ -1,4 +1,4 @@
-module.exports.switchForNamedArgs = function switchForNamedArgs(mapOfFunctions) {
+export function switchForNamedArgs(mapOfFunctions) {
 	return function(argumentMap) {
 		var type = argumentMap.action.type
 
@@ -8,7 +8,7 @@ module.exports.switchForNamedArgs = function switchForNamedArgs(mapOfFunctions) 
 	}
 }
 
-module.exports.makeReducer = function makeReducer(mapOfFunctions, initialState) {
+export function makeReducer(mapOfFunctions, initialState) {
 	return function(state, action) {
 		if (typeof state === 'undefined' && typeof initialState !== 'undefined') {
 			return initialState

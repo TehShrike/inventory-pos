@@ -1,7 +1,7 @@
-var test = require('tape')
-var InventoryTypeService = require('./inventory-type')
-var EventEmitter = require('events').EventEmitter
-var mannish = require('mannish')
+import test from 'tape'
+import InventoryTypeService from './inventory-type'
+import EventEmitter from 'events'.EventEmitter
+import mannish from 'mannish'
 
 test('loads things and then returns then', function(t) {
 	var socketIoMock = new EventEmitter()

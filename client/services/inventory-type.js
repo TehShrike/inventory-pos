@@ -1,7 +1,7 @@
-var makeCallWhenLoaded = require('call-when-loaded')
-var extend = require('xtend')
+import makeCallWhenLoaded from 'call-when-loaded'
+import extend from 'xtend'
 
-module.exports = function(appContext) {
+export default function(appContext) {
 	var socket = appContext.socket
 	var mapOfIdsToTypes = null
 	var topLevelTypes = null

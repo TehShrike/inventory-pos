@@ -1,4 +1,4 @@
-var Bacon = require('baconjs')
+import Bacon from 'baconjs'
 
 export function observe(ractive, objectKeypath, eventName) {
 	if (!eventName) {
@@ -61,5 +61,4 @@ export function handleSavingStreams(streams, ractive, mainObjectProperty) {
 			ractive.set(property, true)
 		})
 	})
-
 }

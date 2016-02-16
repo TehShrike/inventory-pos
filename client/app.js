@@ -1,11 +1,15 @@
-var makeStateRouter = require('abstract-state-router')
-var makeRactiveRenderer = require('ractive-state-router')
-var socketio = require('socket.io-client')
-var dragAndDropFiles = require('ractive-drag-and-drop-files')
-var fs = require('fs')
-var mannish = require('mannish')
+import makeStateRouter from 'abstract-state-router'
+import makeRactiveRenderer from 'ractive-state-router'
+import socketio from 'socket.io-client'
+import dragAndDropFiles from 'ractive-drag-and-drop-files'
+import mannish from 'mannish'
 
-require('events').EventEmitter.defaultMaxListeners = 20
+import appTemplate from './app.html'
+
+import customerSearch from './states/customer-search/customer-search.js'
+import customer from './states/customer/customer.js'
+import configuration from './states/configuration/configuration.js'
+import addPlant from './states/add-plant/add-plant.js'
 
 var socket = socketio(window.location.host)
 
@@ -19,7 +23,7 @@ var stateRouter = makeStateRouter(ractiveRenderer, 'body')
 
 stateRouter.addState({
 	name: 'app',
-	template: fs.readFileSync('client/app.html', { encoding: 'utf8' })
+	template: appTemplate
 })
 
 var context = {
@@ -28,15 +32,15 @@ var context = {
 	mediator: mannish()
 }
 
-require('./states/customer-search/customer-search.js')(context)
-require('./states/customer/customer.js')(context)
-require('./states/configuration/configuration.js')(context)
-require('./states/add-plant/add-plant.js')(context)
+customerSearch(context)
+customer(context)
+configuration(context)
+addPlant(context)
 
-var initializeEmitToServerService = require('./services/emit-to-server.js')
-var initializeGoToStateService = require('./services/go-to-state.js')
-var initializeInventoryTypeService = require('./services/inventory-type.js')
-var initializeDocumentManagerService = require('./services/document-manager.js')
+import initializeEmitToServerService from './services/emit-to-server.js'
+import initializeGoToStateService from './services/go-to-state.js'
+import initializeInventoryTypeService from './services/inventory-type.js'
+import initializeDocumentManagerService from './services/document-manager.js'
 
 socket.on('connect', function() {
 	var userId = 666 // why not

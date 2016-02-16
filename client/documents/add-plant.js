@@ -1,6 +1,6 @@
 import { makeReducer } from 'action-helpers.js'
 
-export var reducer = makeReducer({
+module.exports.reducer = makeReducer({
 	SCAN_PLANT: (state, action) => {
 		return {
 			...state,
@@ -28,7 +28,7 @@ export var reducer = makeReducer({
 	strain: null
 })
 
-export var fsm = {
+module.exports.fsm = {
 	'scanner.add-plants': {
 		START_ROOM_SELECTION: 'scanner.select-room',
 		START_STRAIN_SELECTION: 'scanner.select-strain',

@@ -1,3 +1,3 @@
-module.exports = function({ mediator, stateRouter}) {
+export default function({ mediator, stateRouter}) {
 	mediator.provide('goToState', stateRouter.go)
 }

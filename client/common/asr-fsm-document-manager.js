@@ -1,8 +1,8 @@
-var makeAsrStateWatcher = require('asr-active-state-watcher')
-var startCrossStateDocumentBuilder = require('cross-state-document-builder')
-var createFsmNavigator = require('asr-fsm-navigation')
+import makeAsrStateWatcher from 'asr-active-state-watcher'
+import startCrossStateDocumentBuilder from 'cross-state-document-builder'
+import createFsmNavigator from 'asr-fsm-navigation'
 
-module.exports = function startDocumentManager(stateRouter) {
+export default function startDocumentManager(stateRouter) {
 	const stateWatcher = makeAsrStateWatcher(stateRouter)
 	const startDocument = startCrossStateDocumentBuilder(stateWatcher)
 	const startNavigator = createFsmNavigator(stateRouter, stateWatcher)

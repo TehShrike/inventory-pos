@@ -1,15 +1,15 @@
-var fs = require('fs')
-var Bacon = require('baconjs')
-var makeCustomerAutocomplete = require('../../components/customer-autocomplete')
+import Bacon from 'baconjs'
+import makeCustomerAutocomplete from '../../components/customer-autocomplete'
+import template from './customer-search.html'
 
-module.exports = function(appContext) {
+export default function(appContext) {
 	var mediator = appContext.mediator
 
 	appContext.stateRouter.addState({
 		name: 'app.customer-search',
 		route: 'customer-search',
 		template: {
-			template: fs.readFileSync('client/states/customer-search/customer-search.html', { encoding: 'utf8' }),
+			template: template,
 			components: {
 				customerAutocomplete: makeCustomerAutocomplete(mediator)
 			}

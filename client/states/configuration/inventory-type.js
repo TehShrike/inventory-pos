@@ -1,11 +1,11 @@
-var fs = require('fs')
-var Ractive = require('ractive')
-var makeSavingStream = require('bacon-form-saving')
+import Ractive from 'ractive'
+import makeSavingStream from 'bacon-form-saving'
 import { observe, allProperties, prependKeysWith, handleSavingStreams} from '../../observe'
+import template from './inventory-type.html'
 
-module.exports = function createInventoryTypeComponent(mediator) {
+export default function createInventoryTypeComponent(mediator) {
 	return Ractive.extend({
-		template: fs.readFileSync('client/states/configuration/inventory-type.html', { encoding: 'utf8' }),
+		template: template,
 		isolated: true,
 		data: function() {
 			return {

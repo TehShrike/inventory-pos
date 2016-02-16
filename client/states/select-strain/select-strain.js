@@ -1,11 +1,11 @@
-var fs = require('fs')
+import template from './select-strain.html'
 
 export default function({ mediator, stateRouter }) {
 	stateRouter.addState({
 		name: 'app.select-strain',
 		route: '/select-strain',
 		template: {
-			template: fs.readFileSync('client/states/select-strain/select-strain.html', { encoding: 'utf8' }),
+			template: template,
 			toway: false
 		},
 		resolve: (data, parameters, cb) => {
