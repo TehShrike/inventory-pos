@@ -1,6 +1,6 @@
-const createDocumentManager = require('asr-fsm-document-manager')
+const createDocumentManager = require('asr-fsm-document-manager.js')
 
-export default function mediatorApi({ mediator, stateRouter }) {
+module.exports = function mediatorApi({ mediator, stateRouter }) {
 	const { createDocumentIfNecessaryAndFetch, fetchDocument } = createDocumentManager(stateRouter)
 
 	mediator.provide('createDocumentIfNecessaryAndFetch', (documentDetails, cb) => {

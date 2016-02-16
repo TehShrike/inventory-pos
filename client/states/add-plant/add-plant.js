@@ -1,6 +1,8 @@
 var fs = require('fs')
 var all = require('async-all')
 import { switchForNamedArgs, makeReducer } from 'action-helpers.js'
+import { combineReducers } from 'redux'
+import { reducer as addPlantReducer } from '../../documents/add-plant.js'
 
 export default function(appContext) {
 	var mediator = appContext.mediator
@@ -11,38 +13,24 @@ export default function(appContext) {
 		querystringParameters: ['inventoryTypeId'],
 		template: {
 			template: fs.readFileSync('client/states/add-plant/add-plant.html', { encoding: 'utf8' }),
-			data: {
-				newInventoryTag: ''
-			}
+			twoway: false
 		},
 		data: {
-			reducer: makeReducer({
-				SCAN_PLANT: (state, action) => state
+			reducer: combineReducers({
+				addPlant: addPlantReducer,
+				other: makeReducer({
+					SCAN_PLANT: (state, action) => state
+				})
 			}),
 			afterAction: switchForNamedArgs({
 
 			})
 		},
 		resolve: function(data, parameters, cb) {
-			all({
-				plantInventoryTypes: cb => {
-					if (parameters.inventoryTypeId) {
-						mediator.publish('emitToServer', 'load child plants', parameters.inventoryTypeId, cb)
-					} else {
-						mediator.publish('emitToServer', 'load top level plants', cb)
-					}
-				},
-				currentInventoryType: cb => parameters.inventoryTypeId ? mediator.publish('getInventoryType', parameters.inventoryTypeId, cb) : cb(null, null)
-			}, cb)
+			cb(null, {})
 		},
 		activate: function(context) {
 			var ractive = context.domApi
-
-			ractive.set('buttonColumns', buttonColumnsPerInventoryTypeCount(context.content.plantInventoryTypes.length))
-
-			ractive.on('create-new-inventory', function(tag) {
-				console.log('adding', tag)
-			})
 		}
 	})
 }

@@ -1,13 +1,29 @@
 import { makeReducer } from 'action-helpers.js'
 
 export var reducer = makeReducer({
-	SCAN_PLANT: (state, action) => state,
-	ADD_PLANT_DETAILS: (state, action) => state,
-	COMMIT: (state, action) => state,
-	SELECT_ROOM: (state, action) => state,
-	SELECT_STRAIN: (state, action) => state
+	SCAN_PLANT: (state, action) => {
+		return {
+			...state,
+			plantTags: [
+				...state.plantTags,
+				action.payload
+			]
+		}
+	},
+	SELECT_ROOM: (state, action) => {
+		return {
+			...state,
+			room: action.payload
+		}
+	},
+	SELECT_STRAIN: (state, action) => {
+		return {
+			...state,
+			strain: action.payload
+		}
+	}
 }, {
-	plants: [],
+	plantTags: [],
 	room: null,
 	strain: null
 })

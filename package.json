@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified :-(\" && exit 0",
     "watch": "watchify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
+    "build:dev": "browserify client/app.js -t [ babelify --global=true --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
     "build": "browserify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs | uglifyjs -m > static/build.js",
     "start": "node server.js",
     "startdev": "nodemon server.js"

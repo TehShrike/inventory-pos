@@ -28,15 +28,15 @@ var context = {
 	mediator: mannish()
 }
 
-require('./states/customer-search/customer-search')(context)
-require('./states/customer/customer')(context)
-require('./states/configuration/configuration')(context)
-require('./states/add-plant/add-plant')(context)
+require('./states/customer-search/customer-search.js')(context)
+require('./states/customer/customer.js')(context)
+require('./states/configuration/configuration.js')(context)
+require('./states/add-plant/add-plant.js')(context)
 
-var initializeEmitToServerService = require('./services/emit-to-server')
-var initializeGoToStateService = require('./services/go-to-state')
-var initializeInventoryTypeService = require('./services/inventory-type')
-var initializeDocumentManagerService = require('./services/document-manager')
+var initializeEmitToServerService = require('./services/emit-to-server.js')
+var initializeGoToStateService = require('./services/go-to-state.js')
+var initializeInventoryTypeService = require('./services/inventory-type.js')
+var initializeDocumentManagerService = require('./services/document-manager.js')
 
 socket.on('connect', function() {
 	var userId = 666 // why not

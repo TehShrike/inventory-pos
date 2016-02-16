@@ -1,44 +1,38 @@
 <div class="container add-plant-container">
-	<div class="row add-plant-row">
+	<div class="row">
 		<div class="col-xs-6">
-			{{#currentInventoryType}}
-				<a href="{{makePath('app.add-plant', { inventoryTypeId: currentInventoryType.parentInventoryTypeId }) }}"
-						class="btn btn-primary btn-lg btn-block">
-					Back
-				</a>
-			{{/currentInventoryType}}
+			<button class="btn btn-primary btn-lg btn-block" on-click="fire('dispatch', 'START_ROOM_SELECTION')">
+				{{#if addPlant.room}}
+					{{addPlant.room.name}}
+				{{else}}
+					Select room
+				{{/if}}
+			</button>
 		</div>
 		<div class="col-xs-6">
-			<h3 class="text-center">
-				Choose an inventory type to add
-			</h3>
+			<button class="btn btn-primary btn-lg btn-block" on-click="fire('dispatch', 'START_STRAIN_SELECTION')">
+				{{#if addPlant.strain}}
+					{{addPlant.strain.name}}
+				{{else}}
+					Select strain
+				{{/if}}
+			</button>
 		</div>
 	</div>
-	<div class="row inventory-type-buttons">
-		{{#plantInventoryTypes}}
-			<div class="col-xs-{{buttonColumns}}">
-				<a class="btn btn-lg btn-block btn-default"
-					href="{{ makePath('app.add-plant', { inventoryTypeId: inventoryTypeId }) }}">
-					{{name}}
-				</a>
-			</div>
-		{{/}}
-	</div>
-	{{#currentInventoryType}}
-		<div class="row">
-			<form class="form-horizontal" on-submit="">
-				<div class="form-group">
-					<label class="col-xs-4 control-label">
-						Add {{currentInventoryType.name}}
-					</label>
-					<div class="col-xs-8">
-						<input type="text"
-								class="form-control"
-								value="{{newInventoryTag}}"
-								on-change="fire('create-new-inventory', newInventoryTag)">
-					</div>
-				</div>
-			</form>
+	<div class="row">
+		<div class="col-xs-6 col-xs-offset-3">
+			<input type="text" class="form-control" placeholder="Plant tag" on-change="fire('dispatch', 'SCAN_PLANT', event.node)">
 		</div>
-	{{/}}
+	</div>
+	<table class="table-striped">
+		<tbody>
+			{{#addPlant.plantTags}}
+				<tr>
+					<td>
+						{{.}}
+					</td>
+				</tr>
+			{{/}}
+		</tbody>
+	</table>
 </div>
