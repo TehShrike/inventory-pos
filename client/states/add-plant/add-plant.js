@@ -1,8 +1,8 @@
-var fs = require('fs')
 var all = require('async-all')
 var { switchForNamedArgs, makeReducer } = require('../../common/action-helpers.js')
 var { combineReducers } = require('redux')
 var { reducer: addPlantReducer } = require('../../documents/add-plant.js')
+var template = require('./add-plant.html')
 
 module.exports = function(appContext) {
 	var mediator = appContext.mediator
@@ -12,7 +12,7 @@ module.exports = function(appContext) {
 		route: 'add-plant',
 		querystringParameters: ['inventoryTypeId'],
 		template: {
-			template: fs.readFileSync('client/states/add-plant/add-plant.html', { encoding: 'utf8' }),
+			template,
 			twoway: false
 		},
 		data: {

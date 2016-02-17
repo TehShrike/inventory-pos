@@ -2,7 +2,7 @@ var makeStateRouter = require('abstract-state-router')
 var makeRactiveRenderer = require('ractive-state-router')
 var socketio = require('socket.io-client')
 var dragAndDropFiles = require('ractive-drag-and-drop-files')
-var fs = require('fs')
+var template = require('./app.html')
 var mannish = require('mannish')
 
 require('events').EventEmitter.defaultMaxListeners = 20
@@ -24,7 +24,7 @@ var stateRouter = makeStateRouter(ractiveRenderer, 'body')
 
 stateRouter.addState({
 	name: 'app',
-	template: fs.readFileSync('client/app.html', { encoding: 'utf8' })
+	template
 })
 
 var context = {

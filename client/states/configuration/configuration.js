@@ -1,6 +1,7 @@
-var fs = require('fs')
 var all = require('async-all')
 var inventoryTypeComponent = require('./inventory-type')
+var configurationTemplate = require('./configuration.html')
+var inventoryTypeTemplate = require('./inventory-type-list.html')
 
 module.exports = function(appContext) {
 	var mediator = appContext.mediator
@@ -9,14 +10,14 @@ module.exports = function(appContext) {
 		name: 'app.configuration',
 		route: 'config',
 		defaultChild: 'inventory-type',
-		template: fs.readFileSync('client/states/configuration/configuration.html', { encoding: 'utf8' })
+		template: configurationTemplate
 	})
 
 	appContext.stateRouter.addState({
 		name: 'app.configuration.inventory-type',
 		route: 'inventorytype/:inventoryTypeId(\\d+)?',
 		template: {
-			template: fs.readFileSync('client/states/configuration/inventory-type-list.html', { encoding: 'utf8' }),
+			template: inventoryTypeTemplate,
 			components: {
 				inventoryType: inventoryTypeComponent(appContext.mediator)
 			}

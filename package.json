@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified :-(\" && exit 0",
-    "watch": "watchify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
-    "build:dev": "browserify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
-    "build": "browserify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs | uglifyjs -m > static/build.js",
+    "watch": "watchify client/app.js -t [ stringify --extensions [.html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -o static/build.js -d",
+    "build:dev": "browserify client/app.js -t [ stringify --extensions [.html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -o static/build.js -d",
+    "build": "browserify client/app.js -t [ stringify --extensions [.html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] | uglifyjs -m > static/build.js",
     "start": "node server.js",
     "startdev": "nodemon server.js"
   },
@@ -53,10 +53,10 @@
     "babel-plugin-transform-object-rest-spread": "6.1.18",
     "babel-preset-es2015": "6.1.18",
     "babelify": "7.2.0",
-    "brfs": "1.4.1",
     "browserify": "12.0.1",
     "nodemon": "1.8.1",
     "refreshify": "0.0.2",
+    "stringify": "4.0.1",
     "tape": "4.4.0",
     "uglify-js": "^2.6.1",
     "watchify": "3.6.1"
