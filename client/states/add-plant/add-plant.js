@@ -1,10 +1,10 @@
 var fs = require('fs')
 var all = require('async-all')
-import { switchForNamedArgs, makeReducer } from 'action-helpers.js'
-import { combineReducers } from 'redux'
-import { reducer as addPlantReducer } from '../../documents/add-plant.js'
+var { switchForNamedArgs, makeReducer } = require('../../common/action-helpers.js')
+var { combineReducers } = require('redux')
+var { reducer: addPlantReducer } = require('../../documents/add-plant.js')
 
-export default function(appContext) {
+module.exports = function(appContext) {
 	var mediator = appContext.mediator
 
 	appContext.stateRouter.addState({

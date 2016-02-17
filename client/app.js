@@ -7,6 +7,11 @@ var mannish = require('mannish')
 
 require('events').EventEmitter.defaultMaxListeners = 20
 
+const customerSearch = require('./states/customer-search/customer-search.js')
+const customer = require('./states/customer/customer.js')
+const configuration = require('./states/configuration/configuration.js')
+const addPlant = require('./states/add-plant/add-plant.js')
+
 var socket = socketio(window.location.host)
 
 var ractiveRenderer = makeRactiveRenderer({
@@ -28,10 +33,10 @@ var context = {
 	mediator: mannish()
 }
 
-require('./states/customer-search/customer-search.js')(context)
-require('./states/customer/customer.js')(context)
-require('./states/configuration/configuration.js')(context)
-require('./states/add-plant/add-plant.js')(context)
+customerSearch(context)
+customer(context)
+configuration(context)
+addPlant(context)
 
 var initializeEmitToServerService = require('./services/emit-to-server.js')
 var initializeGoToStateService = require('./services/go-to-state.js')

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified :-(\" && exit 0",
     "watch": "watchify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
-    "build:dev": "browserify client/app.js -t [ babelify --global=true --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
+    "build:dev": "browserify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs -o static/build.js -d",
     "build": "browserify client/app.js -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -t brfs | uglifyjs -m > static/build.js",
     "start": "node server.js",
     "startdev": "nodemon server.js"
@@ -28,7 +28,7 @@
     "bacon-form-saving": "^2.0.0",
     "baconjs": "0.7.75",
     "camelize": "1.0.0",
-    "cross-state-document-builder": "0.1.0",
+    "cross-state-document-builder": "~0.1.0",
     "dezalgo": "1.0.3",
     "ecstatic": "1.0.0",
     "horsey": "git+https://github.com/TehShrike/horsey.git#features-i-need",

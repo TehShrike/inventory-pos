@@ -1,4 +1,4 @@
-var makeCallWhenLoaded = require('call-when-loaded')
+var makeCallWhenLoaded = require('../common/call-when-loaded')
 var extend = require('xtend')
 
 module.exports = function(appContext) {

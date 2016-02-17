@@ -1,7 +1,7 @@
 var fs = require('fs')
 var Ractive = require('ractive')
 var makeSavingStream = require('bacon-form-saving')
-import { observe, allProperties, prependKeysWith, handleSavingStreams} from '../../observe'
+var { observe, allProperties, prependKeysWith, handleSavingStreams} = require('../../observe')
 
 module.exports = function createInventoryTypeComponent(mediator) {
 	return Ractive.extend({

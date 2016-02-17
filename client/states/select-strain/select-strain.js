@@ -1,6 +1,6 @@
 var fs = require('fs')
 
-export default function({ mediator, stateRouter }) {
+module.exports = function({ mediator, stateRouter }) {
 	stateRouter.addState({
 		name: 'app.select-strain',
 		route: '/select-strain',

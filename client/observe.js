@@ -1,6 +1,6 @@
 var Bacon = require('baconjs')
 
-export function observe(ractive, objectKeypath, eventName) {
+module.exports.observe = function observe(ractive, objectKeypath, eventName) {
 	if (!eventName) {
 		eventName = objectKeypath
 		objectKeypath = null
@@ -20,21 +20,21 @@ export function observe(ractive, objectKeypath, eventName) {
 	})
 }
 
-export function allProperties(value, o) {
+module.exports.allProperties = function allProperties(value, o) {
 	return Object.keys(o).reduce(function(memo, key) {
 		memo[key] = value
 		return memo
 	}, {})
 }
 
-export function prependKeysWith(str, o) {
+module.exports.prependKeysWith = function prependKeysWith(str, o) {
 	return Object.keys(o).reduce(function(memo, key) {
 		memo[str + key] = o[key]
 		return memo
 	}, {})
 }
 
-export function handleSavingStreams(streams, ractive, mainObjectProperty) {
+module.exports.handleSavingStreams = function handleSavingStreams(streams, ractive, mainObjectProperty) {
 	streams.newVersionsFromServer.onError(function(err) {
 		if (err.message) {
 			console.error(err.message)
