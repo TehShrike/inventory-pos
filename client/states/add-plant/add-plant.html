@@ -1,7 +1,7 @@
 <div class="container add-plant-container">
 	<div class="row">
 		<div class="col-xs-6">
-			<button class="btn btn-lg btn-block {{ addPlant.room ? 'btn-success' : 'btn-warning' }}" on-click="fire('dispatch', 'START_ROOM_SELECTION')">
+			<button class="btn btn-lg btn-block {{ addPlant.room ? 'btn-primary' : 'btn-warning' }}" on-click="fire('dispatch', 'START_ROOM_SELECTION')">
 				{{#if addPlant.room}}
 					{{addPlant.room.name}}
 				{{else}}
@@ -10,7 +10,7 @@
 			</button>
 		</div>
 		<div class="col-xs-6">
-			<button class="btn btn-lg btn-block {{ addPlant.strain ? 'btn-success' : 'btn-warning' }}" on-click="fire('dispatch', 'START_STRAIN_SELECTION')">
+			<button class="btn btn-lg btn-block {{ addPlant.strain ? 'btn-primary' : 'btn-warning' }}" on-click="fire('dispatch', 'START_STRAIN_SELECTION')">
 				{{#if addPlant.strain}}
 					{{addPlant.strain.name}}
 				{{else}}
@@ -19,24 +19,27 @@
 			</button>
 		</div>
 	</div>
+
 	<div class="row">
-		<div class="col-xs-6 col-xs-offset-3">
+		<div class="col-xs-12 col-lg-offset-3 col-lg-6">
 			<input type="text"
 				class="form-control"
 				placeholder="Plant tag"
 				on-change="fire('dispatchInput', 'SCAN_PLANT', event.node)"
 				value="{{other.barcodeInput}}">
+
+			<table class="table table-striped">
+				<tbody>
+					{{#addPlant.plantTags.concat().reverse()}}
+						<tr>
+							<td>
+								{{.}}
+							</td>
+						</tr>
+					{{/}}
+				</tbody>
+			</table>
+
 		</div>
 	</div>
-	<table class="table-striped">
-		<tbody>
-			{{#addPlant.plantTags}}
-				<tr>
-					<td>
-						{{.}}
-					</td>
-				</tr>
-			{{/}}
-		</tbody>
-	</table>
 </div>
