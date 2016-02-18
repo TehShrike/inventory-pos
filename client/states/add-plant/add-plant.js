@@ -1,13 +1,11 @@
 var all = require('async-all')
 var { switchForNamedArgs, makeReducer } = require('../../common/action-helpers.js')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('../../documents/add-plant.js')
+var { reducer: addPlantReducer, fsm } = require('../../documents/add-plant.js')
 var template = require('./add-plant.html')
 
-module.exports = function(appContext) {
-	var mediator = appContext.mediator
-
-	appContext.stateRouter.addState({
+module.exports = function({ stateRouter, mediator }) {
+	stateRouter.addState({
 		name: 'app.add-plant',
 		route: 'add-plant',
 		querystringParameters: ['inventoryTypeId'],
@@ -19,18 +17,38 @@ module.exports = function(appContext) {
 			reducer: combineReducers({
 				addPlant: addPlantReducer,
 				other: makeReducer({
-					SCAN_PLANT: (state, action) => state
-				})
+					SCAN_PLANT: (state, action) => {
+						return {
+							...state,
+							barcodeInput: action.payload
+						}
+					},
+					CLEAR_BARCODE_INPUT: state => {
+						return {
+							...state,
+							barcodeInput: ''
+						}
+					}
+				}, {})
 			}),
 			afterAction: switchForNamedArgs({
-
+				SCAN_PLANT: ({ dispatch }) => {
+					setTimeout(() => dispatch({ type: 'CLEAR_BARCODE_INPUT' }), 100)
+				}
 			})
 		},
 		resolve: function(data, parameters, cb) {
-			cb(null, {})
-		},
-		activate: function(context) {
-			var ractive = context.domApi
+
+			mediator.request('createDocumentIfNecessaryAndFetch', {
+				name: 'addPlant',
+				reducer: addPlantReducer,
+				fsm
+			}, (err, doc) => {
+				cb(err, {
+					addPlant: doc.store.getState(),
+					other: {}
+				})
+			})
 		}
 	})
 }

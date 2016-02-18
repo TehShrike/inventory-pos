@@ -1,7 +1,10 @@
 <div class="row">
 	<div class="col-xs-12">
+		<h1>Select strain</h1>
+	</div>
+	<div class="col-xs-12">
 		{{#strains}}
-			<button class="btn-primary btn-block btn-lg" on-click="fire('dispatch', 'SELECT_STRAIN', {{.}})">
+			<button class="btn-primary btn-block btn-lg" on-click="fire('dispatch', 'SELECT_STRAIN', { payload: . })">
 				{{name}}
 			</button>
 		{{/strains}}

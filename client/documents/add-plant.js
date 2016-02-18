@@ -29,18 +29,18 @@ module.exports.reducer = makeReducer({
 })
 
 module.exports.fsm = {
-	'scanner.add-plants': {
-		START_ROOM_SELECTION: 'scanner.select-room',
-		START_STRAIN_SELECTION: 'scanner.select-strain',
-		COMMIT: 'scanner.add-plants'
+	'app.add-plant': {
+		START_ROOM_SELECTION: 'app.select-room',
+		START_STRAIN_SELECTION: 'app.select-strain',
+		COMMIT: 'app.add-plant'
 	},
-	'scanner.select-room': {
-		SELECT_ROOM: 'scanner.add-plants',
-		CANCEL: 'scanner.add-plants'
+	'app.select-room': {
+		SELECT_ROOM: 'app.add-plant',
+		CANCEL: 'app.add-plant'
 	},
-	'scanner.select-strain': {
-		SELECT_STRAIN: 'scanner.add-plants',
-		CANCEL: 'scanner.add-plants'
+	'app.select-strain': {
+		SELECT_STRAIN: 'app.add-plant',
+		CANCEL: 'app.add-plant'
 	}
 }
 

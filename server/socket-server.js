@@ -2,7 +2,12 @@ var socketHandlers = [
 	'socket-customer',
 	'socket-file',
 	'socket-inventory-type',
-	'socket-room'
+	'socket-inventory',
+	'socket-plant-growth-phase-change',
+	'socket-plant-move',
+	'socket-plant',
+	'socket-room',
+	'socket-strain'
 ].map(str => 'socket-api/' + str).map(require)
 
 module.exports = function handleUserConnection(config, socket, broadcast) {
