@@ -23,7 +23,7 @@
   "dependencies": {
     "abstract-state-router": "~5.10.0",
     "asr-active-state-watcher": "1.0.0",
-    "asr-fsm-navigation": "0.0.0",
+    "asr-fsm-navigation": "~0.1.0",
     "async-all": "1.0.1",
     "bacon-form-saving": "^2.0.0",
     "baconjs": "0.7.75",

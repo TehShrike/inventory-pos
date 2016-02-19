@@ -4,7 +4,9 @@
 	</div>
 	<div class="col-xs-12">
 		{{#rooms}}
-			<button class="btn-primary btn-block btn-lg" on-click="fire('dispatch', 'SELECT_ROOM', { payload: . })">
+			<button
+			class="btn-block btn-lg {{ document.room.name == name ? 'btn-success' : 'btn-primary' }}"
+			on-click="fire('dispatch', 'SELECT_ROOM', { payload: . })">
 				{{name}}
 			</button>
 		{{/rooms}}

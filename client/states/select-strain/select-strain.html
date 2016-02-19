@@ -4,7 +4,9 @@
 	</div>
 	<div class="col-xs-12">
 		{{#strains}}
-			<button class="btn-primary btn-block btn-lg" on-click="fire('dispatch', 'SELECT_STRAIN', { payload: . })">
+			<button
+			class="btn-block btn-lg {{ document.strain.strainId == strainId ? 'btn-success' : 'btn-primary' }}"
+			on-click="fire('dispatch', 'SELECT_STRAIN', { payload: . })">
 				{{name}}
 			</button>
 		{{/strains}}

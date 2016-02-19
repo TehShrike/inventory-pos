@@ -30,8 +30,18 @@ module.exports.reducer = makeReducer({
 
 module.exports.fsm = {
 	'app.add-plant': {
-		START_ROOM_SELECTION: 'app.select-room',
-		START_STRAIN_SELECTION: 'app.select-strain',
+		START_ROOM_SELECTION: {
+			name: 'app.select-room',
+			parameters: {
+				document: 'addPlant'
+			}
+		},
+		START_STRAIN_SELECTION: {
+			name: 'app.select-strain',
+			parameters: {
+				document: 'addPlant'
+			}
+		},
 		COMMIT: 'app.add-plant'
 	},
 	'app.select-room': {

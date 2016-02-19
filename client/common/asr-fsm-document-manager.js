@@ -12,7 +12,9 @@ module.exports = function startDocumentManager(stateRouter) {
 	function createDocumentIfNecessaryAndFetch({name, reducer, initialState, fsm}) {
 		if (!documents[name]) {
 			const doc = startDocument(reducer, initialState)
-			const stopNavigation = startNavigator(fsm)
+			const stopNavigation = startNavigator(fsm, {
+				inherit: false
+			})
 
 			documents[name] = {
 				store: doc.store,
