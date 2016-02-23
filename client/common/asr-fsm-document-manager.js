@@ -30,8 +30,21 @@ module.exports = function startDocumentManager(stateRouter) {
 		return documents[name]
 	}
 
+	function finishDocumentAndReturnStore(name) {
+		if (documents[name]) {
+			let doc = documents[name]
+
+			doc.stop()
+
+			delete documents[name]
+
+			return doc.store
+		}
+	}
+
 	return {
 		fetchDocument: name => documents[name],
-		createDocumentIfNecessaryAndFetch: createDocumentIfNecessaryAndFetch
+		createDocumentIfNecessaryAndFetch: createDocumentIfNecessaryAndFetch,
+		finishDocument: finishDocumentAndReturnStore
 	}
 }
