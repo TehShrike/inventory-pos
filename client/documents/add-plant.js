@@ -53,4 +53,3 @@ module.exports.fsm = {
 		CANCEL: 'app.add-plant'
 	}
 }
-

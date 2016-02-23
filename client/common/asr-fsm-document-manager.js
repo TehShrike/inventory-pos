@@ -9,9 +9,10 @@ module.exports = function startDocumentManager(stateRouter) {
 
 	var documents = {}
 
-	function createDocumentIfNecessaryAndFetch({name, reducer, initialState, fsm}) {
+	function createDocumentIfNecessaryAndFetch({name, reducer, initialState, fsm, middlewares}) {
 		if (!documents[name]) {
-			const doc = startDocument(reducer, initialState)
+			const currentState = typeof initialState === 'function' ? initialState() : initialState
+			const doc = startDocument(reducer, currentState, middlewares)
 			const stopNavigation = startNavigator(fsm, {
 				inherit: false
 			})

@@ -1,7 +1,8 @@
 var all = require('async-all')
 var { switchForNamedArgs, makeReducer } = require('../../common/action-helpers.js')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer, fsm } = require('../../documents/add-plant.js')
+var { reducer: addPlantReducer } = require('../../documents/add-plant.js')
+var { getActiveDocument } = require('../../documents/documents.js')
 var template = require('./add-plant.html')
 
 module.exports = function({ stateRouter, mediator }) {
@@ -38,12 +39,7 @@ module.exports = function({ stateRouter, mediator }) {
 			})
 		},
 		resolve: function(data, parameters, cb) {
-
-			mediator.request('createDocumentIfNecessaryAndFetch', {
-				name: 'addPlant',
-				reducer: addPlantReducer,
-				fsm
-			}, (err, doc) => {
+			getActiveDocument(mediator, 'addPlant', (err, doc) => {
 				cb(err, {
 					addPlant: doc.store.getState(),
 					other: {}

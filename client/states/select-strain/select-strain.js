@@ -1,5 +1,6 @@
 var all = require('async-all')
 var template = require('./select-strain.html')
+var { getActiveDocument } = require('../../documents/documents')
 
 module.exports = function({ mediator, stateRouter }) {
 	stateRouter.addState({
@@ -13,7 +14,7 @@ module.exports = function({ mediator, stateRouter }) {
 		resolve: (data, parameters, cb) => {
 			all({
 				strains: cb => mediator.publish('emitToServer', 'load strains', cb),
-				document: cb => mediator.publish('fetchDocument', parameters.document, (err, doc) => cb(err, doc.store.getState()))
+				document: cb => getActiveDocument(mediator, parameters.document, (err, doc) => cb(err, doc.store.getState()))
 			}, cb)
 		}
 	})
