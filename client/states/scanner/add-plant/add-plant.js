@@ -1,13 +1,13 @@
 var all = require('async-all')
-var { switchForNamedArgs, makeReducer } = require('../../common/action-helpers.js')
+var { switchForNamedArgs, makeReducer } = require('../../../common/action-helpers.js')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('../../documents/add-plant.js')
-var { getActiveDocument } = require('../../documents/documents.js')
+var { reducer: addPlantReducer } = require('../../../documents/add-plant.js')
+var { getActiveDocument } = require('../../../documents/documents.js')
 var template = require('./add-plant.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
-		name: 'app.add-plant',
+		name: 'scanner.add-plant',
 		route: 'add-plant',
 		querystringParameters: ['inventoryTypeId'],
 		template: {
@@ -35,6 +35,11 @@ module.exports = function({ stateRouter, mediator }) {
 			afterAction: switchForNamedArgs({
 				SCAN_PLANT: ({ dispatch }) => {
 					setTimeout(() => dispatch({ type: 'CLEAR_BARCODE_INPUT' }), 100)
+				},
+				CANCEL_DOCUMENT: () => {
+					mediator.publish('finishDocument', 'addPlant', store => {
+						stateRouter.go('scanner')
+					})
 				}
 			})
 		},

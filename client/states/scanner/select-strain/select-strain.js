@@ -1,11 +1,11 @@
 var all = require('async-all')
-var template = require('./select-room.html')
-var { getActiveDocument } = require('../../documents/documents')
+var template = require('./select-strain.html')
+var { getActiveDocument } = require('../../../documents/documents')
 
 module.exports = function({ mediator, stateRouter }) {
 	stateRouter.addState({
-		name: 'app.select-room',
-		route: '/select-room',
+		name: 'scanner.select-strain',
+		route: '/select-strain',
 		querystringParameters: [ 'document' ],
 		template: {
 			template,
@@ -13,10 +13,9 @@ module.exports = function({ mediator, stateRouter }) {
 		},
 		resolve: (data, parameters, cb) => {
 			all({
-				rooms: cb => mediator.publish('emitToServer', 'load rooms', cb),
+				strains: cb => mediator.publish('emitToServer', 'load strains', cb),
 				document: cb => getActiveDocument(mediator, parameters.document, (err, doc) => cb(err, doc.store.getState()))
 			}, cb)
-
 		}
 	})
 }

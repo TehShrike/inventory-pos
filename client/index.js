@@ -3,7 +3,6 @@ var Ractive = require('ractive')
 var makeRactiveRenderer = require('ractive-state-router')
 var socketio = require('socket.io-client')
 var dragAndDropFiles = require('ractive-drag-and-drop-files')
-var template = require('./app.html')
 var mannish = require('mannish')
 var stateRouterRedux = require('state-router-redux-ractive')
 
@@ -21,23 +20,21 @@ var stateRouter = makeStateRouter(ractiveRenderer, 'body')
 
 stateRouterRedux(stateRouter)
 
-stateRouter.addState({
-	name: 'app',
-	template
-})
-
 var context = {
 	stateRouter: stateRouter,
 	socket: socket,
 	mediator: mannish()
 }
 
-require('./states/customer-search/customer-search.js')(context)
-require('./states/customer/customer.js')(context)
-require('./states/configuration/configuration.js')(context)
-require('./states/add-plant/add-plant.js')(context)
-require('./states/select-room/select-room.js')(context)
-require('./states/select-strain/select-strain.js')(context)
+require('./states/app/app.js')(context)
+require('./states/app/customer-search/customer-search.js')(context)
+require('./states/app/customer/customer.js')(context)
+require('./states/app/configuration/configuration.js')(context)
+require('./states/scanner/scanner.js')(context)
+require('./states/scanner/menu/menu.js')(context)
+require('./states/scanner/add-plant/add-plant.js')(context)
+require('./states/scanner/select-room/select-room.js')(context)
+require('./states/scanner/select-strain/select-strain.js')(context)
 
 var initializeEmitToServerService = require('./services/emit-to-server.js')
 var initializeGoToStateService = require('./services/go-to-state.js')

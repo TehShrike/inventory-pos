@@ -3,6 +3,10 @@
 	padding-top: 20px;
 }
 
+.scanner-container {
+	padding-top: 20px;
+}
+
 .cursor-pointer {
 	cursor: pointer;
 }
@@ -18,4 +22,11 @@
 
 .scanner-row {
 	font-size: 2em;
+}
+
+.btn-xl, .btn-group-xl > .btn {
+	padding: 18px 27px;
+	font-size: 22px;
+	line-height: 1.8;
+	border-radius: 6px;
 }

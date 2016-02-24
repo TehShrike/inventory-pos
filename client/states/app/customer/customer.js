@@ -1,7 +1,7 @@
 var makeSavingStream = require('bacon-form-saving')
 var socketStream = require('socket.io-stream')
 var all = require('async-all')
-var { observe, allProperties, prependKeysWith, handleSavingStreams } = require('../../observe.js')
+var { observe, allProperties, prependKeysWith, handleSavingStreams } = require('../../../observe.js')
 var template = require('./customer.html')
 
 module.exports = function(appContext) {
