@@ -1,0 +1,54 @@
+<div class="container scanner-menu">
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-lg btn-block btn-primary" on-click="fire('dispatch', 'BACK_TO_DOCUMENT')">
+				Back
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-lg btn-block {{ addPlant.room ? 'btn-info' : 'btn-warning' }}" on-click="fire('dispatch', 'START_ROOM_SELECTION')">
+				{{#if addPlant.room}}
+					Change room
+				{{else}}
+					Select room
+				{{/if}}
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-lg btn-block {{ addPlant.strain ? 'btn-info' : 'btn-warning' }}" on-click="fire('dispatch', 'START_STRAIN_SELECTION')">
+				{{#if addPlant.strain}}
+					Change strain
+				{{else}}
+					Select strain
+				{{/if}}
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-lg btn-block {{ addPlant.growthPhase ? 'btn-info' : 'btn-warning' }}" on-click="fire('dispatch', 'START_GROWTH_PHASE_SELECTION')">
+				{{#if addPlant.growthPhase}}
+					Change growth phase
+				{{else}}
+					Select growth phase
+				{{/if}}
+			</button>
+		</div>
+	</div>
+	{{#if addPlant.room && addPlant.strain && addPlant.growthPhase && addPlant.plantTags.length > 0}}
+		<div class="row">
+			<div class="col-xs-12">
+				<button class="btn btn-success btn-lg btn-block" on-click="fire('dispatch', 'START_SAVE')">Commit document</button>
+			</div>
+		</div>
+	{{/if}}
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-danger btn-lg btn-block" on-click="fire('dispatch', 'CANCEL_DOCUMENT')">Cancel document</button>
+		</div>
+	</div>
+</div>

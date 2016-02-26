@@ -9,7 +9,6 @@ module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
 		name: 'scanner.add-plant',
 		route: 'add-plant',
-		querystringParameters: ['inventoryTypeId'],
 		template: {
 			template,
 			twoway: false

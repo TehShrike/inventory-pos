@@ -1,0 +1,56 @@
+<div class="container scanner-menu">
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block btn-primary"
+			on-click="fire('dispatch', 'CANCEL')">
+				Back
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block {{document.growthPhase == 'immature' ? 'btn-info' : 'btn-default'}}"
+			on-click="fire('dispatch', 'SELECT_GROWTH_PHASE', { payload: 'immature' })">
+				Immature
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block {{document.growthPhase == 'vegetative' ? 'btn-info' : 'btn-default'}}"
+			on-click="fire('dispatch', 'SELECT_GROWTH_PHASE', { payload: 'vegetative' })">
+				Vegetative
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block {{document.growthPhase == 'flowering' ? 'btn-info' : 'btn-default'}}"
+			on-click="fire('dispatch', 'SELECT_GROWTH_PHASE', { payload: 'flowering' })">
+				Flowering
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block {{document.growthPhase == 'harvested' ? 'btn-info' : 'btn-default'}}"
+			on-click="fire('dispatch', 'SELECT_GROWTH_PHASE', { payload: 'harvested' })">
+				Harvested
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button
+			class="btn btn-lg btn-block {{document.growthPhase == 'packaged' ? 'btn-info' : 'btn-default'}}"
+			on-click="fire('dispatch', 'SELECT_GROWTH_PHASE', { payload: 'packaged' })">
+				Packaged
+			</button>
+		</div>
+	</div>
+</div>

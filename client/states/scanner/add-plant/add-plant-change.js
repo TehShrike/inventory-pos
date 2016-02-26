@@ -7,9 +7,8 @@ var template = require('./add-plant-change.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
-		name: 'scanner.add-plant',
-		route: 'add-plant',
-		querystringParameters: ['inventoryTypeId'],
+		name: 'scanner.add-plant-change',
+		route: 'add-plant/change',
 		template: {
 			template,
 			twoway: false

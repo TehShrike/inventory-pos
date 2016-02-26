@@ -1,14 +1,18 @@
-<div class="row">
-	<div class="col-xs-12">
-		<h1 class="text-center">Select room</h1>
+<div class="container scanner-menu">
+	<div class="row">
+		<div class="col-xs-12">
+			<h1 class="text-center">Select room</h1>
+		</div>
 	</div>
-	<div class="col-xs-12">
-		{{#rooms}}
-			<button
-			class="btn-block btn-lg {{ document.room.name == name ? 'btn-info' : 'btn-primary' }}"
-			on-click="fire('dispatch', 'SELECT_ROOM', { payload: . })">
-				{{name}}
-			</button>
-		{{/rooms}}
+	<div class="row">
+		<div class="col-xs-12">
+			{{#rooms}}
+				<button
+				class="btn-block btn-lg {{ document.room.name == name ? 'btn-info' : 'btn-primary' }}"
+				on-click="fire('dispatch', 'SELECT_ROOM', { payload: . })">
+					{{name}}
+				</button>
+			{{/rooms}}
+		</div>
 	</div>
 </div>

@@ -37,6 +37,9 @@ module.exports.reducer = makeReducer({
 
 module.exports.fsm = {
 	'scanner.add-plant': {
+		VIEW_OPTIONS: 'scanner.add-plant-change'
+	},
+	'scanner.add-plant-change': {
 		START_ROOM_SELECTION: {
 			name: 'scanner.select-room',
 			parameters: {
@@ -49,14 +52,25 @@ module.exports.fsm = {
 				document: 'addPlant'
 			}
 		},
-		COMMIT: 'scanner.add-plant'
+		START_GROWTH_PHASE_SELECTION: {
+			name: 'scanner.select-growth-phase',
+			parameters: {
+				document: 'addPlant'
+			}
+		},
+		BACK_TO_DOCUMENT: 'scanner.add-plant',
+		START_SAVE: 'scanner.add-plant-save'
 	},
 	'scanner.select-room': {
-		SELECT_ROOM: 'scanner.add-plant',
-		CANCEL: 'scanner.add-plant'
+		SELECT_ROOM: 'scanner.add-plant-change',
+		CANCEL: 'scanner.add-plant-change'
 	},
 	'scanner.select-strain': {
-		SELECT_STRAIN: 'scanner.add-plant',
-		CANCEL: 'scanner.add-plant'
+		SELECT_STRAIN: 'scanner.add-plant-change',
+		CANCEL: 'scanner.add-plant-change'
+	},
+	'scanner.select-growth-phase': {
+		SELECT_GROWTH_PHASE: 'scanner.add-plant-change',
+		CANCEL: 'scanner.add-plant-change'
 	}
 }
