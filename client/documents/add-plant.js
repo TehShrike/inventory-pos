@@ -21,11 +21,18 @@ module.exports.reducer = makeReducer({
 			...state,
 			strain: action.payload
 		}
+	},
+	SELECT_GROWTH_PHASE: (state, action) => {
+		return {
+			...state,
+			growthPhase: action.payload
+		}
 	}
 }, {
 	plantTags: [],
 	room: null,
-	strain: null
+	strain: null,
+	growthPhase: 'immature'
 })
 
 module.exports.fsm = {

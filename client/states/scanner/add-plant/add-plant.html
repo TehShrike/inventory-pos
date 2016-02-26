@@ -1,25 +1,47 @@
 <div class="container add-plant-container">
 	<div class="row">
-		<div class="col-xs-6">
-			<button class="btn btn-lg btn-block {{ addPlant.room ? 'btn-info' : 'btn-warning' }}" on-click="fire('dispatch', 'START_ROOM_SELECTION')">
-				{{#if addPlant.room}}
-					{{addPlant.room.name}}
-				{{else}}
-					Select room
-				{{/if}}
-			</button>
-		</div>
-		<div class="col-xs-6">
-			<button class="btn btn-lg btn-block {{ addPlant.strain ? 'btn-info' : 'btn-warning' }}" on-click="fire('dispatch', 'START_STRAIN_SELECTION')">
-				{{#if addPlant.strain}}
-					{{addPlant.strain.name}}
-				{{else}}
-					Select strain
-				{{/if}}
-			</button>
+		<div class="col-xs-12 col-md-6 col-md-offset-3">
+			<table class="table">
+				<tr>
+					<td>
+						Room:
+					</td>
+					<td class="{{addPlant.room ? 'text-primary' : 'text-warning'}}">
+						{{#if addPlant.room}}
+							{{addPlant.room.name}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Strain:
+					</td>
+					<td class="{{addPlant.strain ? 'text-primary' : 'text-warning'}}">
+						{{#if addPlant.strain}}
+							{{addPlant.strain.name}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Growth phase:
+					</td>
+					<td class="{{addPlant.growthPhase ? 'text-primary' : 'text-warning'}}">
+						{{#if addPlant.growthPhase}}
+							{{addPlant.growthPhase}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+			</table>
+			<a href="" class="btn btn-default btn-block">Change</a>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-xs-12 col-lg-offset-3 col-lg-6">
 			<input type="text"
@@ -40,12 +62,6 @@
 				</tbody>
 			</table>
 
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-xs-12 col-lg-offset-4 col-lg-4">
-			<button class="btn btn-danger btn-lg btn-block" on-click="fire('dispatch', 'CANCEL_DOCUMENT')">Cancel</button>
 		</div>
 	</div>
 </div>

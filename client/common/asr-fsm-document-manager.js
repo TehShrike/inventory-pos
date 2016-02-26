@@ -9,7 +9,7 @@ module.exports = function startDocumentManager(stateRouter) {
 
 	var documents = {}
 
-	function createDocumentIfNecessaryAndFetch({name, reducer, initialState, fsm, middlewares}) {
+	function createDocumentIfNecessaryAndFetch({name, reducer, initialState, fsm, middlewares }) {
 		if (!documents[name]) {
 			const currentState = typeof initialState === 'function' ? initialState() : initialState
 			const doc = startDocument(reducer, currentState, middlewares)
@@ -22,6 +22,7 @@ module.exports = function startDocumentManager(stateRouter) {
 				fsm: fsm,
 				stop: () => {
 					doc.finishDocument()
+
 					stopNavigation()
 				}
 			}

@@ -19,3 +19,7 @@ module.exports.createLocalDocumentSaver = function createLocalDocumentSaver(docu
 		}
 	}
 }
+
+module.exports.deleteLocalDocument = function deleteLocalDocument(documentIdentifier) {
+	process.nextTick(() => localStorage.removeItem(documentIdentifier))
+}

@@ -1,9 +1,9 @@
-var all = require('async-all')
-var { switchForNamedArgs, makeReducer } = require('../../../common/action-helpers.js')
+var { switchForNamedArgs } = require('../../../common/action-helpers.js')
+var { deleteLocalDocument } = require('../../../common/document-helpers')
 var { combineReducers } = require('redux')
 var { reducer: addPlantReducer } = require('../../../documents/add-plant.js')
 var { getActiveDocument } = require('../../../documents/documents.js')
-var template = require('./add-plant.html')
+var template = require('./add-plant-change.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
@@ -16,33 +16,21 @@ module.exports = function({ stateRouter, mediator }) {
 		},
 		data: {
 			reducer: combineReducers({
-				addPlant: addPlantReducer,
-				other: makeReducer({
-					SCAN_PLANT: (state, action) => {
-						return {
-							...state,
-							barcodeInput: action.payload
-						}
-					},
-					CLEAR_BARCODE_INPUT: state => {
-						return {
-							...state,
-							barcodeInput: ''
-						}
-					}
-				}, {})
+				addPlant: addPlantReducer
 			}),
 			afterAction: switchForNamedArgs({
-				SCAN_PLANT: ({ dispatch }) => {
-					setTimeout(() => dispatch({ type: 'CLEAR_BARCODE_INPUT' }), 100)
+				CANCEL_DOCUMENT: () => {
+					mediator.publish('finishDocument', 'addPlant', store => {
+						deleteLocalDocument('addPlant')
+						stateRouter.go('scanner')
+					})
 				}
 			})
 		},
 		resolve: function(data, parameters, cb) {
 			getActiveDocument(mediator, 'addPlant', (err, doc) => {
 				cb(err, {
-					addPlant: doc.store.getState(),
-					other: {}
+					addPlant: doc.store.getState()
 				})
 			})
 		}

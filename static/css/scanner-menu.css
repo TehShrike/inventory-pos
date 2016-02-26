@@ -5,8 +5,3 @@
 .scanner-menu > .row:first-child {
 	margin-top: inherit;
 }
-
-.scanner-menu .menu-button-container {
-	margin-left: 1em;
-	margin-right: 1em;
-}
