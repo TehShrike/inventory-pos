@@ -27,7 +27,8 @@ module.exports.allProperties = function allProperties(value, o) {
 	}, {})
 }
 
-module.exports.prependKeysWith = function prependKeysWith(str, o) {
+module.exports.prependKeysWith = prependKeysWith
+function prependKeysWith(str, o) {
 	return Object.keys(o).reduce(function(memo, key) {
 		memo[str + key] = o[key]
 		return memo
