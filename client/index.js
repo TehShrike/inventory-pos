@@ -43,6 +43,7 @@ var initializeEmitToServerService = require('./services/emit-to-server.js')
 var initializeGoToStateService = require('./services/go-to-state.js')
 var initializeInventoryTypeService = require('./services/inventory-type.js')
 var initializeDocumentManagerService = require('./services/document-manager.js')
+var barcodeScanHandler = require('./services/barcode-scan-handler.js')
 
 socket.on('connect', function() {
 	var userId = 666 // why not
@@ -51,6 +52,7 @@ socket.on('connect', function() {
 		initializeGoToStateService(context)
 		initializeInventoryTypeService(context)
 		initializeDocumentManagerService(context)
+		barcodeScanHandler(context)
 
 		stateRouter.evaluateCurrentRoute('app.customer-search')
 	})

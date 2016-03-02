@@ -44,6 +44,11 @@ module.exports = function({ stateRouter, mediator }) {
 					other: {}
 				})
 			})
+		},
+		activate: function(context) {
+			const unsubscribe = mediator.subscribe('barcodeScan', barcode => context.domApi.fire('dispatch', 'SCAN_PLANT', { payload: barcode }))
+
+			context.on('destroy', unsubscribe)
 		}
 	})
 }
