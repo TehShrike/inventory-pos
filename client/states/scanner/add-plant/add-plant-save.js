@@ -3,7 +3,7 @@ var template = require('./add-plant-save.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	function cleanUpDocumentAndGoToMainMenu() {
-		mediator.publish('finishDocument', 'addPlant', store => {
+		mediator.publish('finishDocument', 'addPlant', () => {
 			deleteLocalDocument('addPlant')
 			stateRouter.go('scanner')
 		})
@@ -29,8 +29,14 @@ module.exports = function({ stateRouter, mediator }) {
 			})
 		},
 		activate: function({ domApi }) {
-			cleanUpDocumentAndGoToMainMenu()
-			// TODO: actually save
+			mediator.publish('emitToServer', 'save add plant document', domApi.get('addPlant'), err => {
+				if (err) {
+					domApi.set('error', err)
+					console.log(err)
+				} else {
+					cleanUpDocumentAndGoToMainMenu()
+				}
+			})
 		}
 	})
 }
