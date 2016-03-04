@@ -1,5 +1,4 @@
 const browserify = require('browserify')
-const watchify = require('watchify')
 const fs = require('fs')
 const glob = require('glob')
 const all = require('async-all')
@@ -33,7 +32,11 @@ function buildBrowserifyPipeline(dev) {
 	}).transform('stringify')
 
 	if (dev) {
-		b.plugin(watchify)
+		b.plugin('watchify', {
+			ignoreWatch: [
+				'**/globbed.js'
+			]
+		})
 	}
 
 	return b
