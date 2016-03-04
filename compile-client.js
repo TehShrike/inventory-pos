@@ -4,6 +4,7 @@ const glob = require('glob')
 const all = require('async-all')
 const each = require('async-each')
 const chokidar = require('chokidar')
+const tinylr = require('tiny-lr')
 
 const postcss = require('postcss')
 const precss = require('precss')
@@ -16,16 +17,40 @@ const cssProcessor = postcss([
 	precss
 ])
 
+if (dev) {
+	const tinyReloadServer = tinylr()
+
+	tinyReloadServer.listen(35729)
+
+	function emitChangedFile(file) {
+		console.log('emitting reload', file)
+		tinyReloadServer.changed({
+			body: {
+				files: [file]
+			}
+		})
+	}
+}
+
 function main(dev) {
 	const b = buildBrowserifyPipeline(dev)
 	function bundle() {
 		buildGlobbed(() => {
 			console.log('rebuilding', new Date())
-			b.bundle().pipe(fs.createWriteStream('static/build.js'));
+			const writeToDiskStream = fs.createWriteStream('static/build.js')
+			b.bundle().pipe(writeToDiskStream)
+			if (dev) {
+				writeToDiskStream.on('finish', () => {
+					emitChangedFile('static/build.js')
+				})
+			}
 		})
 	}
 
-	b.on('update', bundle)
+	if (dev) {
+		b.on('update', bundle)
+	}
+
 
 	// bundle()
 
@@ -130,8 +155,13 @@ function buildCss(done) {
 				})
 
 				const css = result.css.toString()
-				fs.writeFileSync('./static/css/' + filename, css)
-				fs.writeFileSync('./static/css/' + filename + '.map', result.map.toString())
+				const outputFilename = './static/css/' + filename
+				fs.writeFileSync(outputFilename, css)
+				fs.writeFileSync(outputFilename + '.map', result.map.toString())
+
+				if (dev) {
+					emitChangedFile(outputFilename)
+				}
 
 				done && done(filename)
 			}, rejection => {

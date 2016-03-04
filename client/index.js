@@ -18,7 +18,7 @@ var ractiveRenderer = makeRactiveRenderer(Ractive, {
 	}
 })
 
-var stateRouter = makeStateRouter(ractiveRenderer, 'body')
+var stateRouter = makeStateRouter(ractiveRenderer, '#main')
 
 stateRouterRedux(stateRouter)
 

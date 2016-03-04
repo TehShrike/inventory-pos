@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified :-(\" && exit 0",
-    "watch": "watchify client/index.js -t [ stringify --extensions [ .html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -o static/build.js -d",
-    "build:dev": "browserify client/index.js -t [ stringify --extensions [ .html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] -o static/build.js -d",
-    "build": "browserify client/index.js -t [ stringify --extensions [ .html ] ] -t [ babelify --presets [ es2015 ] --plugins [ transform-object-rest-spread ] ] | uglifyjs -m > static/build.js",
+    "watch": "node ./compile-client.js dev",
+    "build": "node ./compile-client.js",
     "start": "node server.js",
     "startdev": "nodemon server.js"
   },
@@ -64,6 +63,7 @@
     "refreshify": "0.0.2",
     "stringify": "4.0.1",
     "tape": "4.4.0",
+    "tiny-lr": "0.2.1",
     "uglify-js": "^2.6.1",
     "watchify": "3.6.1"
   }
