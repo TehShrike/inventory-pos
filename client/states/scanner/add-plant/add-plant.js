@@ -1,8 +1,8 @@
 var all = require('async-all')
-var { switchForNamedArgs, makeReducer } = require('../../../common/action-helpers.js')
+var { switchForNamedArgs, makeReducer } = require('common/action-helpers.js')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('../../../documents/add-plant.js')
-var { getActiveDocument } = require('../../../documents/documents.js')
+var { reducer: addPlantReducer } = require('documents/add-plant.js')
+var { getActiveDocument } = require('documents/documents.js')
 var template = require('./add-plant.html')
 
 module.exports = function({ stateRouter, mediator }) {

@@ -1,4 +1,4 @@
-var { deleteLocalDocument } = require('../../../common/document-helpers')
+var { deleteLocalDocument } = require('common/document-helpers')
 var template = require('./add-plant-save.html')
 
 module.exports = function({ stateRouter, mediator }) {

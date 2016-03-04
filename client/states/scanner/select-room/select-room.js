@@ -1,6 +1,6 @@
 var all = require('async-all')
 var template = require('./select-room.html')
-var { getActiveDocument } = require('../../../documents/documents')
+var { getActiveDocument } = require('documents/documents')
 
 module.exports = function({ mediator, stateRouter }) {
 	stateRouter.addState({

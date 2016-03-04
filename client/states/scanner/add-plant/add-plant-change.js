@@ -1,8 +1,8 @@
-var { switchForNamedArgs } = require('../../../common/action-helpers.js')
-var { deleteLocalDocument } = require('../../../common/document-helpers')
+var { switchForNamedArgs } = require('common/action-helpers.js')
+var { deleteLocalDocument } = require('common/document-helpers')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('../../../documents/add-plant.js')
-var { getActiveDocument } = require('../../../documents/documents.js')
+var { reducer: addPlantReducer } = require('documents/add-plant.js')
+var { getActiveDocument } = require('documents/documents.js')
 var template = require('./add-plant-change.html')
 
 module.exports = function({ stateRouter, mediator }) {
