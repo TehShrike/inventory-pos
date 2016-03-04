@@ -1,5 +1,5 @@
 var Bacon = require('baconjs')
-var makeCustomerAutocomplete = require('../../../components/customer-autocomplete')
+var makeCustomerAutocomplete = require('components/customer-autocomplete')
 var template = require('./customer-search.html')
 
 module.exports = function(appContext) {
