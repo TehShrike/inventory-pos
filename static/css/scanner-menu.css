@@ -1,7 +1,0 @@
-.scanner-menu > .row {
-	margin-top: 1.5em;
-}
-
-.scanner-menu > .row:first-child {
-	margin-top: inherit;
-}

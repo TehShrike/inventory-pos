@@ -1,4 +1,5 @@
 build.js
 client/globbed.js
+static/css/bundle.css*
 !server/node_modules
 !client/node_modules

@@ -2,8 +2,19 @@ const browserify = require('browserify')
 const fs = require('fs')
 const glob = require('glob')
 const all = require('async-all')
+const each = require('async-each')
+const chokidar = require('chokidar')
+
+const postcss = require('postcss')
+const precss = require('precss')
+const autoprefixer = require('autoprefixer')
 
 const dev = process.argv[2] === 'dev'
+
+const cssProcessor = postcss([
+	autoprefixer,
+	precss
+])
 
 function main(dev) {
 	const b = buildBrowserifyPipeline(dev)
@@ -16,7 +27,12 @@ function main(dev) {
 
 	b.on('update', bundle)
 
-	bundle()
+	// bundle()
+
+	buildCss(bundle)
+	if (dev) {
+		watchCss(buildCss)
+	}
 }
 main(dev)
 
@@ -68,11 +84,11 @@ function globNonTest(path, cb) {
 			throw err
 		}
 
-		cb(err, files.filter(file => !/-test.js$/.test(file)).sort(sortGlobbedIncludes))
+		cb(err, files.filter(file => !/-test.js$/.test(file)).sort(sortByDepth))
 	})
 }
 
-function sortGlobbedIncludes(fileA, fileB) {
+function sortByDepth(fileA, fileB) {
 	var chunksA = fileA.split('/')
 	var chunksB = fileB.split('/')
 	return chunksA.length - chunksB.length
@@ -82,4 +98,56 @@ function getFilesAsRequireArray(files) {
 	return '[\n' + files.map(file => {
 		return `		require('./${file}')`
 	}).join(',\n') + '\n\t]'
+}
+
+function buildCss(done) {
+	glob('client/**/*.css', (err, files) => {
+		if (err) {
+			throw err
+		}
+		const filesInLoadOrder = files.sort(sortByDepth)
+
+		each(filesInLoadOrder, fs.readFile, (err, contents) => {
+			const lazyResults = contents.map((css, index) => {
+				const file = files[index]
+
+				return cssProcessor.process(css, {
+					from: file,
+					to: 'bundle.css'
+				})
+			})
+
+			Promise.all(lazyResults).then(results => {
+				const rootOfAll = results.map(result => result.root).reduce((memo, nextRoot) => memo.append(nextRoot))
+
+				const filename = 'bundle.css'
+
+				const result = rootOfAll.toResult({
+					to: filename,
+					map: {
+						inline: false
+					}
+				})
+
+				const css = result.css.toString()
+				fs.writeFileSync('./static/css/' + filename, css)
+				fs.writeFileSync('./static/css/' + filename + '.map', result.map.toString())
+
+				done && done(filename)
+			}, rejection => {
+				console.error(rejection)
+				throw rejection
+			})
+		})
+	})
+}
+
+function watchCss(cb) {
+	const watcher = chokidar.watch('./client/**/*.css', {
+		ignoreInitial: true
+	})
+
+	watcher.on('add', cb)
+	watcher.on('change', cb)
+	watcher.on('unlink', cb)
 }

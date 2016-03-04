@@ -1,0 +1,8 @@
+.add-plant-container {
+	.row {
+		margin-bottom: 10px;
+	}
+	.scanner-row {
+		color: red;
+	}
+}
