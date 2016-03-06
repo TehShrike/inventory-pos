@@ -1,14 +1,9 @@
-var socketHandlers = [
-	'socket-customer',
-	'socket-file',
-	'socket-inventory-type',
-	'socket-inventory',
-	'socket-plant-growth-phase-change',
-	'socket-plant-move',
-	'socket-plant',
-	'socket-room',
-	'socket-strain'
-].map(str => 'socket-api/' + str).map(require)
+var fs = require('fs')
+
+var socketHandlers = fs.readdirSync('server/socket-api')
+	.filter(file => /^socket-.*\.js$/.test(file))
+	.map(str => './socket-api/' + str)
+	.map(require)
 
 module.exports = function handleUserConnection(config, socket, broadcast) {
 	socket.on('authenticate', function(userId, cb) {
