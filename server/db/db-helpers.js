@@ -1,12 +1,16 @@
 var camelize = require('camelize')
 
-var thisModule = module.exports = {
-	query: function(dbConnection, query, cb) {
-		return dbConnection.query(query.str, query.params, camelizeCallback(cb))
-	},
-	queryFirst: function(dbConnection, query, cb) {
-		return thisModule.query(dbConnection, query, firstRow(cb))
-	}
+function query(dbConnection, queryObject, cb) {
+	return dbConnection.query(queryObject.str, queryObject.params, camelizeCallback(cb))
+}
+
+function queryFirst(dbConnection, queryObject, cb) {
+	return query(dbConnection, queryObject, firstRow(cb))
+}
+
+module.exports = {
+	query: query,
+	queryFirst: queryFirst
 }
 
 function firstRow(cb) {

@@ -1,7 +1,7 @@
-var saver = require('db/saver')
-var everythingOptionalExcept = require('db/joi-everything-optional-except')
-var dropKeys = require('db/drop-keys')
-var db = require('db/db-helpers')
+var saver = require('./saver')
+var everythingOptionalExcept = require('./joi-everything-optional-except')
+var dropKeys = require('./drop-keys')
+var db = require('./db-helpers')
 
 var Joi = require('joi')
 var q = require('sql-concat')

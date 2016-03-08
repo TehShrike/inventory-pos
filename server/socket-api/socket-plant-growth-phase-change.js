@@ -1,4 +1,4 @@
-var makePlantDb = require('db/plant-growth-phase-change-db')
+var db = require('db')
 var socketServerUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallback
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var plantGrowthPhaseChangeDb = makePlantDb(config.db)
+	var plantGrowthPhaseChangeDb = db.plantGrowthPhaseChange
 
 	socket.on('load plant growth phase change', serializeErrorPassedToLastCallback(plantGrowthPhaseChangeDb.load))
 	socket.on('save plant growth phase change', function(plantGrowthPhaseChange, cb) {

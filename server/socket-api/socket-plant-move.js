@@ -1,4 +1,4 @@
-var makePlantMoveDb = require('db/plant-move-db')
+var db = require('db')
 var socketServerUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallback
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var plantMoveDb = makePlantMoveDb(config.db)
+	var plantMoveDb = db.plantMove
 
 	socket.on('load plant move', serializeErrorPassedToLastCallback(plantMoveDb.load))
 	socket.on('save plant move', function(plantMove, cb) {

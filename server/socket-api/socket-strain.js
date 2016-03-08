@@ -1,4 +1,4 @@
-var makeStrainDb = require('db/strain-db')
+var db = require('db')
 var socketServerUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallback
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var strainDb = makeStrainDb(config.db)
+	var strainDb = db.strain
 
 	socket.on('load strains', serializeErrorPassedToLastCallback(strainDb.loadAll))
 	socket.on('load strain', serializeErrorPassedToLastCallback(strainDb.load))

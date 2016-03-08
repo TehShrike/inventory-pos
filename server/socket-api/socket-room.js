@@ -1,4 +1,4 @@
-var makeRoomDb = require('db/room-db')
+var db = require('db')
 var socketServerUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallback
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var roomDb = makeRoomDb(config.db)
+	var roomDb = db.room
 
 	socket.on('load rooms', serializeErrorPassedToLastCallback(roomDb.loadAll))
 	socket.on('load room', serializeErrorPassedToLastCallback(roomDb.load))

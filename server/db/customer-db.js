@@ -1,8 +1,8 @@
 var Joi = require('joi')
-var saver = require('db/saver')
+var saver = require('./saver')
 var q = require('sql-concat')
-var everythingOptionalExcept = require('db/joi-everything-optional-except')
-var db = require('db/db-helpers')
+var everythingOptionalExcept = require('./joi-everything-optional-except')
+var db = require('./db-helpers')
 var extend = require('xtend')
 
 var TABLE = 'customer'

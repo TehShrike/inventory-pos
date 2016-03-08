@@ -1,4 +1,4 @@
-var makeInventoryTypeDb = require('db/inventory-type-db')
+var db = require('db')
 var socketServerUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallback
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var inventoryTypeDb = makeInventoryTypeDb(config.db)
+	var inventoryTypeDb = db.inventoryType
 
 	socket.on('load inventory types', serializeErrorPassedToLastCallback(inventoryTypeDb.load))
 	socket.on('save inventory type', function(inventoryType, cb) {

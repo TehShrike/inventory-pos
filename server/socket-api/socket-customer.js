@@ -1,4 +1,4 @@
-var makeCustomerDb = require('db/customer-db')
+var db = require('db')
 var serializeUtil = require('socket-server-util')
 
 var serializeErrorPassedToLastCallback = serializeUtil.serializeErrorPassedToLastCallback
@@ -6,7 +6,7 @@ var callFunctionBeforeCallbackSync = serializeUtil.callFunctionBeforeCallbackSyn
 var serializeErrorForCallback = serializeUtil.serializeErrorForCallback
 
 module.exports = function(config, socket, broadcast) {
-	var customerDb = makeCustomerDb(config.db)
+	var customerDb = db.customer
 
 	socket.on('save customer', function handler(customer, cb) {
 		customerDb.save(customer, callFunctionBeforeCallbackSync(serializeErrorForCallback(cb), function(savedCustomer) {
