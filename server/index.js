@@ -4,19 +4,11 @@ var socketio = require('socket.io')
 var path = require('path')
 var mannish = require('mannish')
 var parseUrl = require('url').parse
+var extend = require('xtend')
 
 var socketHandler = require('./socket-server')
-var connectionPoolFactory = require('connection-pool-factory')
-
-var pool = connectionPoolFactory({
-	host: '127.0.0.1',
-	user: 'root',
-	password: '',
-	database: 'pos'
-})
 
 var config = {
-	db: pool,
 	imageDirectories: {
 		customerDriversLicense: '/tmp/customer-drivers-license',
 		customerPrescription: '/tmp/customer-prescription'
@@ -60,7 +52,19 @@ function makeServer() {
 	var io = socketio(server)
 
 	io.on('connection', function(socket) {
-		socketHandler(config, socket)
+		// TODO: real authentication
+		socket.on('authenticate', function(userId, cb) {
+			socketHandler({
+				userId: userId,
+				config: config
+			}, socket)
+
+
+			cb(null, {
+				userId: userId,
+				name: 'Totally cool user'
+			})
+		})
 	})
 
 	return server

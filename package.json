@@ -47,6 +47,8 @@
     "socket.io-stream": "0.8.0",
     "sql-concat": "^1.1.2",
     "state-router-redux-ractive": "~2.1.0",
+    "then-denodeify": "1.0.0",
+    "wrap-promise": "1.0.1",
     "xtend": "4.0.1"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedTo
 var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallbackSync
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
-module.exports = function(config, socket, broadcast) {
+module.exports = function(context, socket, broadcast) {
 	var inventoryTypeDb = db.inventoryType
 
 	socket.on('load inventory types', serializeErrorPassedToLastCallback(inventoryTypeDb.load))

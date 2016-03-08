@@ -5,7 +5,7 @@ var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedTo
 var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallbackSync
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
-module.exports = function(config, socket, broadcast) {
+module.exports = function(context, socket, broadcast) {
 	var plantGrowthPhaseChangeDb = db.plantGrowthPhaseChange
 
 	socket.on('load plant growth phase change', serializeErrorPassedToLastCallback(plantGrowthPhaseChangeDb.load))

@@ -5,7 +5,7 @@ var serializeErrorPassedToLastCallback = serializeUtil.serializeErrorPassedToLas
 var callFunctionBeforeCallbackSync = serializeUtil.callFunctionBeforeCallbackSync
 var serializeErrorForCallback = serializeUtil.serializeErrorForCallback
 
-module.exports = function(config, socket, broadcast) {
+module.exports = function(context, socket, broadcast) {
 	var customerDb = db.customer
 
 	socket.on('save customer', function handler(customer, cb) {

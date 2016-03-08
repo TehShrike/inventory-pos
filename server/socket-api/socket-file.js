@@ -6,9 +6,9 @@ var serializeErrorPassedToLastCallback = serializeUtil.serializeErrorPassedToLas
 var getFileStreamHandler = fileHelpers.getFileStreamHandler
 var checkFileExists = fileHelpers.checkFileExists
 
-module.exports = function(config, socket) {
-	var customerDriversLicenseDirectory = config.imageDirectories.customerDriversLicense
-	var customerPrescriptionDirectory = config.imageDirectories.customerPrescription
+module.exports = function(context, socket) {
+	var customerDriversLicenseDirectory = context.config.imageDirectories.customerDriversLicense
+	var customerPrescriptionDirectory = context.config.imageDirectories.customerPrescription
 
 	socket.on('drivers license exists', serializeErrorPassedToLastCallback(checkFileExists.bind(null, customerDriversLicenseDirectory)))
 	socket.on('prescription exists', serializeErrorPassedToLastCallback(checkFileExists.bind(null, customerPrescriptionDirectory)))
