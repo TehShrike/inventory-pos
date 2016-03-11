@@ -4,7 +4,12 @@ var socketio = require('socket.io')
 var path = require('path')
 var mannish = require('mannish')
 var parseUrl = require('url').parse
-var extend = require('xtend')
+
+require('loud-rejection/register')
+require('babel-register')({
+	presets: 'es2015',
+	plugins: 'transform-object-rest-spread'
+})
 
 var socketHandler = require('./socket-server')
 

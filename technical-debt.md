@@ -12,3 +12,8 @@
 - keyboard control of the customer search interface
 - need a dropdown that works other places in the app
 - need to display drivers license/social/etc number in customer search to disambiguate
+
+## Configuration
+
+- database connection
+- image location folders

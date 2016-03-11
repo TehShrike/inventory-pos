@@ -7,11 +7,12 @@ var Joi = require('joi')
 var q = require('sql-concat')
 
 var TABLE = 'plant'
-var COLUMNS = ['plant_id', 'tag_scope', 'tag_number', 'strain_id', 'room_id', 'growth_phase', 'version']
+var COLUMNS = ['plant_id', 'account_id', 'tag_scope', 'tag_number', 'strain_id', 'room_id', 'growth_phase', 'version']
 
 var joiObject = {
 	plant_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
-	tag_scope: Joi.string().max(20).allow(null),
+	account_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
+	tag_scope: Joi.string().max(20),
 	tag_number: Joi.string().max(50).allow(null),
 	strain_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	room_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
@@ -23,7 +24,7 @@ var insertSchema = Joi.object(joiObject)
 var updateSchema = Joi.object(
 	dropKeys(
 		everythingOptionalExcept(joiObject, ['plant_id', 'version']),
-	['tag_scope', 'tag_number']))
+	['account_id', 'tag_scope', 'tag_number']))
 
 module.exports = function plantDb(connection) {
 
@@ -40,6 +41,8 @@ module.exports = function plantDb(connection) {
 		var newPlantsToSave = doc.plantTags.map(tag => {
 			return [
 				tag,
+				doc.accountId,
+				doc.tagScope,
 				doc.strain.strainId,
 				doc.room.roomId,
 				doc.growthPhase,
@@ -47,7 +50,7 @@ module.exports = function plantDb(connection) {
 			]
 		})
 
-		connection.query('INSERT INTO plant (tag_number, strain_id, room_id, growth_phase, version) VALUES ?', [newPlantsToSave], cb)
+		connection.query('INSERT INTO plant (tag_number, account_id, tag_scope, strain_id, room_id, growth_phase, version) VALUES ?', [newPlantsToSave], cb)
 	}
 
 	var saverOptions = {

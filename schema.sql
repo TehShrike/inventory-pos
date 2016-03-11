@@ -150,3 +150,27 @@ CREATE TABLE inventory_quantity_transfer (
 	to_quantity DECIMAL (12,5) NOT NULL,
 	PRIMARY KEY (inventory_quantity_transfer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE plant
+	ADD COLUMN account_id INT UNSIGNED NOT NULL AFTER plant_id,
+	MODIFY COLUMN tag_scope VARCHAR(20) NOT NULL;
+
+CREATE TABLE user (
+	user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	account_id INT UNSIGNED NOT NULL,
+	name VARCHAR(300) CHARACTER SET utf8mb4 NOT NULL,
+	email_address VARCHAR(300) CHARACTER SET ascii NOT NULL,
+	version INT UNSIGNED NOT NULL,
+	PRIMARY KEY (user_id),
+	UNIQUE KEY email_address (email_address),
+	INDEX account (account_id)
+);
+
+CREATE TABLE account (
+	account_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	name VARCHAR(150) CHARACTER SET utf8mb4 NOT NULL,
+	default_tag_scope CHAR(20),
+	version INT UNSIGNED NOT NULL,
+	PRIMARY KEY (account_id),
+	UNIQUE KEY name (name)
+);

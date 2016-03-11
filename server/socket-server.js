@@ -30,5 +30,5 @@ function getUserRoom(userId) {
 }
 
 function getAccountId(userId) {
-	return 123
+	return 1
 }

@@ -31,7 +31,7 @@ var context = {
 globbed.states.forEach(createState => createState(context))
 
 socket.on('connect', function() {
-	var userId = 666 // why not
+	var userId = 1
 	socket.emit('authenticate', userId, function(err, user) {
 		globbed.services.forEach(service => service(context))
 

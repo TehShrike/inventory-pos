@@ -1,5 +1,6 @@
 var all = require('async-all')
-var { switchForNamedArgs, makeReducer } = require('common/action-helpers.js')
+var { switchForNamedArgs } = require('common/action-helpers.js')
+var makeReducer = require('create-redux-reducer-from-map')
 var { combineReducers } = require('redux')
 var { reducer: addPlantReducer } = require('documents/add-plant.js')
 var { getActiveDocument } = require('documents/documents.js')

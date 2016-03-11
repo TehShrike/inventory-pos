@@ -17,7 +17,5 @@ module.exports = function(context, socket, broadcast) {
 		}))
 	})
 
-	socket.on('save add plant document', serializeErrorPassedToLastCallback(
-		(addPlant, cb) => saveAddPlantDocument(context.userId, addPlant, cb)
-	))
+	socket.on('save add plant document', serializeErrorPassedToLastCallback((addPlant, cb) => saveAddPlantDocument(context.userId, addPlant, cb)))
 }
