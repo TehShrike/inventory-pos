@@ -1,19 +1,28 @@
-var http = require('http')
-var ecstatic = require('ecstatic')
-var socketio = require('socket.io')
-var path = require('path')
-var mannish = require('mannish')
-var parseUrl = require('url').parse
-
 require('loud-rejection/register')
 require('babel-register')({
 	presets: 'es2015',
-	plugins: 'transform-object-rest-spread'
+	plugins: 'transform-object-rest-spread',
+	ignore: function(path) {
+		// false => transpile with babel
+		const nodeModules = /\/node_modules\//.test(path)
+		if (nodeModules) {
+			return !/\/server\/node_modules\//.test(path)
+		}
+		return false
+	}
 })
 
-var socketHandler = require('./socket-server')
+const http = require('http')
+const ecstatic = require('ecstatic')
+const socketio = require('socket.io')
+const path = require('path')
+const mannish = require('mannish')
+const parseUrl = require('url').parse
+const db = require('db')
 
-var config = {
+const socketHandler = require('./socket-server')
+
+const config = {
 	imageDirectories: {
 		customerDriversLicense: '/tmp/customer-drivers-license',
 		customerPrescription: '/tmp/customer-prescription'
@@ -21,7 +30,7 @@ var config = {
 	mediator: mannish()
 }
 
-var staticDirectories = [
+const staticDirectories = [
 	{ path: '/driverslicense', directory: config.imageDirectories.customerDriversLicense },
 	{ path: '/prescription', directory: config.imageDirectories.customerPrescription }
 ].map(function(directory) {
@@ -35,15 +44,15 @@ var staticDirectories = [
 })
 
 function makeServer() {
-	var websiteServer = ecstatic({
+	const websiteServer = ecstatic({
 		root: path.resolve(__dirname, '../static'),
 		cache: 0,
 		gzip: true
 	})
 
-	var server = http.createServer(function(request, response) {
-		var pathName = parseUrl(request.url).pathname
-		var server = staticDirectories.reduce(function(defaultServer, directory) {
+	const server = http.createServer(function(request, response) {
+		const pathName = parseUrl(request.url).pathname
+		const server = staticDirectories.reduce(function(defaultServer, directory) {
 			if (pathName.indexOf(directory.path) === 0) {
 				return directory.server
 			} else {
@@ -54,20 +63,27 @@ function makeServer() {
 		server(request, response)
 	})
 
-	var io = socketio(server)
+	const io = socketio(server)
 
 	io.on('connection', function(socket) {
 		// TODO: real authentication
 		socket.on('authenticate', function(userId, cb) {
-			socketHandler({
-				userId: userId,
-				config: config
-			}, socket)
+			db.user.load(userId, (err, user) => {
+				if (err) {
+					cb(err)
+				} else {
+					socketHandler({
+						userId: user.userId,
+						accountId: user.accountId,
+						config: config
+					}, socket)
 
 
-			cb(null, {
-				userId: userId,
-				name: 'Totally cool user'
+					cb(null, {
+						userId: userId,
+						name: 'Totally cool user'
+					})
+				}
 			})
 		})
 	})

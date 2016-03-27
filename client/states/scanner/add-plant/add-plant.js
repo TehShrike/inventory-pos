@@ -33,7 +33,17 @@ module.exports = function({ stateRouter, mediator }) {
 				}, {})
 			}),
 			afterAction: switchForNamedArgs({
-				SCAN_PLANT: ({ dispatch }) => {
+				SCAN_PLANT: ({ dispatch, action }) => {
+					mediator.request('emitToServer', 'load plant by tagNumber', action.payload, (err, plant) => {
+						if (err) {
+							console.error(err)
+						} if (plant) {
+							dispatch({
+								type: 'REMOVE_PLANT',
+								payload: action.payload
+							})
+						}
+					})
 					setTimeout(() => dispatch({ type: 'CLEAR_BARCODE_INPUT' }), 100)
 				}
 			})

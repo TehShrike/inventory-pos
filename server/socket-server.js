@@ -7,11 +7,11 @@ var socketHandlers = fs.readdirSync('server/socket-api')
 
 module.exports = function handleUserConnection(context, socket) {
 	const userId = context.userId
-	var accountId = getAccountId(userId)
-	var accountRoom = getAccountRoom(accountId)
-	var userRoom = getUserRoom(userId)
+	const accountId = context.userId
+	const accountRoom = getAccountRoom(accountId)
+	const userRoom = getUserRoom(userId)
 
-	var broadcast = {
+	const broadcast = {
 		toAccount: (key, value) => socket.broadcast.to(accountRoom).emit(key, value)
 	}
 
@@ -27,8 +27,4 @@ function getAccountRoom(accountId) {
 
 function getUserRoom(userId) {
 	return 'user:' + userId
-}
-
-function getAccountId(userId) {
-	return 1
 }

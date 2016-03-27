@@ -60,11 +60,22 @@ module.exports = function plantDb(connection) {
 		db: connection
 	}
 
+	function loadByTag({ tagNumber, accountId }, cb) {
+		const query = q.select(COLUMNS)
+			.from(TABLE)
+			.where('account_id', accountId)
+			.where('tag_number', tagNumber)
+			.build()
+
+		db.queryFirst(connection, query, cb)
+	}
+
 	return {
 		saveAddPlantDocument: saveAddPlantDocument,
 		save: function savePlant(plant, cb) {
 			saver('plant', saverOptions, plant, cb)
 		},
-		load: loadPlant
+		load: loadPlant,
+		loadByTag
 	}
 }

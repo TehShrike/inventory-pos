@@ -77,7 +77,7 @@ function buildBrowserifyPipeline(dev) {
 			ignoreWatch: [
 				'**/globbed.js'
 			]
-		})
+		}).plugin('errorify')
 	}
 
 	return b
