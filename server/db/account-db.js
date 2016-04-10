@@ -29,11 +29,22 @@ module.exports = function accountDb(connection) {
 		db.queryFirst(connection, query, cb)
 	}
 
+	function loadByUserId(userId, cb) {
+		const query = q.select(COLUMNS)
+			.from('user')
+			.join(TABLE, 'user.account_id = account.account_id')
+			.where('user.user_id', userId)
+			.build()
+
+		db.queryFirst(connection, query, cb)
+	}
+
 	return {
 		save: function saveAccount(account, cb) {
 			saver('account', { insertSchema: insertSchema, updateSchema: updateSchema, load: loadAccount, db: connection }, account, cb)
 		},
-		load: loadAccount
+		load: loadAccount,
+		loadByUserId
 	}
 }
 

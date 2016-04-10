@@ -1,35 +1,35 @@
 var { switchForNamedArgs } = require('common/action-helpers.js')
 var { deleteLocalDocument } = require('common/document-helpers')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('documents/add-plant-document.js')
+var { reducer: plantGrowthPhaseChangeReducer } = require('documents/plant-growth-phase-change-document.js')
 var { getActiveDocument } = require('documents/documents.js')
-var template = require('./add-plant-change.html')
+var template = require('./plant-growth-phase-change-menu.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
-		name: 'scanner.add-plant-change',
-		route: 'add-plant/change',
+		name: 'scanner.plant-growth-phase-change-menu',
+		route: 'plant-growth-phase-change/menu',
 		template: {
 			template,
 			twoway: false
 		},
 		data: {
 			reducer: combineReducers({
-				addPlant: addPlantReducer
+				plantGrowthPhaseChange: plantGrowthPhaseChangeReducer
 			}),
 			afterAction: switchForNamedArgs({
 				CANCEL_DOCUMENT: () => {
-					mediator.publish('finishDocument', 'addPlant', store => {
-						deleteLocalDocument('addPlant')
+					mediator.publish('finishDocument', 'plantGrowthPhaseChange', store => {
+						deleteLocalDocument('plantGrowthPhaseChange')
 						stateRouter.go('scanner')
 					})
 				}
 			})
 		},
 		resolve: function(data, parameters, cb) {
-			getActiveDocument(mediator, 'addPlant', (err, doc) => {
+			getActiveDocument(mediator, 'plantGrowthPhaseChange', (err, doc) => {
 				cb(err, {
-					addPlant: doc.store.getState()
+					plantGrowthPhaseChange: doc.store.getState()
 				})
 			})
 		}

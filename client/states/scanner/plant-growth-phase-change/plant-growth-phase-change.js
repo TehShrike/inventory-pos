@@ -2,21 +2,21 @@ var all = require('async-all')
 var { switchForNamedArgs } = require('common/action-helpers.js')
 var makeReducer = require('create-redux-reducer-from-map')
 var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('documents/add-plant-document.js')
+var { reducer: plantGrowthPhaseChangeReducer } = require('documents/plant-growth-phase-change-document.js')
 var { getActiveDocument } = require('documents/documents.js')
-var template = require('./add-plant.html')
+var template = require('./plant-growth-phase-change.html')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
-		name: 'scanner.add-plant',
-		route: 'add-plant',
+		name: 'scanner.plant-growth-phase-change',
+		route: 'plant-growth-phase-change',
 		template: {
 			template,
 			twoway: false
 		},
 		data: {
 			reducer: combineReducers({
-				addPlant: addPlantReducer,
+				plantGrowthPhaseChange: plantGrowthPhaseChangeReducer,
 				other: makeReducer({
 					SCAN_PLANT: (state, action) => {
 						return {
@@ -39,6 +39,11 @@ module.exports = function({ stateRouter, mediator }) {
 							console.error(err)
 						} if (plant) {
 							dispatch({
+								type: 'SET_TAG_DETAILS',
+								payload: plant
+							})
+						} else {
+							dispatch({
 								type: 'REMOVE_PLANT',
 								payload: action.payload
 							})
@@ -49,9 +54,9 @@ module.exports = function({ stateRouter, mediator }) {
 			})
 		},
 		resolve: function(data, parameters, cb) {
-			getActiveDocument(mediator, 'addPlant', (err, doc) => {
+			getActiveDocument(mediator, 'plantGrowthPhaseChange', (err, doc) => {
 				cb(err, {
-					addPlant: doc.store.getState(),
+					plantGrowthPhaseChange: doc.store.getState(),
 					other: {}
 				})
 			})

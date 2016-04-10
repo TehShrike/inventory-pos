@@ -34,6 +34,10 @@ module.exports = function plantGrowthPhaseChangeDb(connection) {
 		db.queryFirst(connection, query, cb)
 	}
 
+	function insertRows(newGrowthPhaseChanges, cb) {
+		connection.query('INSERT INTO plant_growth_phase_change (plant_id, date, from_growth_phase, to_growth_phase) VALUES ?', [newGrowthPhaseChanges], cb)
+	}
+
 	var saverOptions = {
 		insertSchema: insertSchema,
 		updateSchema: updateSchema,
@@ -46,6 +50,7 @@ module.exports = function plantGrowthPhaseChangeDb(connection) {
 		save: function savePlantGrowthPhaseChange(plantGrowthPhaseChange, cb) {
 			saver('plant_growth_phase_change', saverOptions, plantGrowthPhaseChange, cb)
 		},
-		load: loadPlantGrowthPhase
+		load: loadPlantGrowthPhase,
+		insertRows
 	}
 }

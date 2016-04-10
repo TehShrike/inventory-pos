@@ -1,0 +1,59 @@
+<div class="container plant-growth-phase-change-container">
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-md-offset-3">
+			<table class="table">
+				<tr>
+					<td>
+						Current growth phase:
+					</td>
+					<td class="{{plantGrowthPhaseChange.growthPhase ? 'text-primary' : 'text-warning'}}">
+						{{#if plantGrowthPhaseChange.growthPhase}}
+							{{plantGrowthPhaseChange.growthPhase}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						New growth phase:
+					</td>
+					<td class="{{plantGrowthPhaseChange.growthPhase ? 'text-primary' : 'text-warning'}}">
+						{{#if plantGrowthPhaseChange.growthPhase}}
+							{{plantGrowthPhaseChange.growthPhase}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+			</table>
+			<a
+			href="{{makePath('scanner.plant-growth-phase-change-menu')}}"
+			class="btn btn-default btn-block">
+				Document...
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-lg-offset-3 col-lg-6">
+			<input type="text"
+				class="form-control"
+				placeholder="Plant tag"
+				on-change="fire('dispatchInput', 'SCAN_PLANT', event.node)"
+				value="{{other.barcodeInput}}">
+
+			<table class="table table-striped">
+				<tbody>
+					{{#plantGrowthPhaseChange.plantTags.concat().reverse()}}
+						<tr class="scanner-row">
+							<td>
+								{{.}}
+							</td>
+						</tr>
+					{{/}}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>

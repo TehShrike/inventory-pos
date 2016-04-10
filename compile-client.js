@@ -5,6 +5,7 @@ const all = require('async-all')
 const each = require('async-each')
 const chokidar = require('chokidar')
 const tinylr = require('tiny-lr')
+const camelize = require('camelize')
 
 const postcss = require('postcss')
 const precss = require('precss')
@@ -86,15 +87,18 @@ function buildBrowserifyPipeline(dev) {
 function buildGlobbed(cb) {
 	all({
 		services: cb => globNonTest('services/*.js', cb),
-		states: cb => globNonTest('states/**/*.js', cb)
+		states: cb => globNonTest('states/**/*.js', cb),
+		shared: cb => globNonTest('../shared/*.js', cb)
 	}, (err, globs) => {
 		const servicesArray = getFilesAsRequireArray(globs.services)
 		const statesArray = getFilesAsRequireArray(globs.states)
+		const sharedObject = getFilesAsRequireObject(globs.shared)
 
 		const output = `
 module.exports = {
 	services: ${servicesArray},
-	states: ${statesArray}
+	states: ${statesArray},
+	shared: ${sharedObject}
 }`
 		fs.writeFileSync('client/globbed.js', output + '\n')
 		cb()
@@ -125,6 +129,13 @@ function getFilesAsRequireArray(files) {
 	}).join(',\n') + '\n\t]'
 }
 
+function getFilesAsRequireObject(files) {
+	return '{\n' + files.map(file => {
+		const key = camelize(file.substring('../shared/'.length, file.length - '.js'.length))
+		return `		${key}: require('./${file}')`
+	}).join(',\n') + '\n\t}'
+}
+
 function buildCss(done) {
 	glob('client/**/*.css', (err, files) => {
 		if (err) {
@@ -141,7 +152,6 @@ function buildCss(done) {
 					to: 'bundle.css'
 				})
 			})
-
 			Promise.all(lazyResults).then(results => {
 				const rootOfAll = results.map(result => result.root).reduce((memo, nextRoot) => memo.append(nextRoot))
 
