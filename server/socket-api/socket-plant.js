@@ -6,7 +6,7 @@ var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedTo
 var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallbackSync
 var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
 
-module.exports = function({ userId, accountId }, socket, broadcast) {
+module.exports = function({ userId, accountId, tagScope }, socket, broadcast) {
 	const plantDb = db.plant
 
 	socket.on('load plant', serializeErrorPassedToLastCallback(plantDb.load))
@@ -22,7 +22,11 @@ module.exports = function({ userId, accountId }, socket, broadcast) {
 	socket.on('load plant by tag number', serializeErrorPassedToLastCallback((tagNumber, cb) => {
 		plantDb.loadByTag({
 			accountId,
-			tagNumber
-		}, cb)
+			tagNumber,
+			tagScope
+		}, (err, plants) => {
+			if (err) return cb(err)
+			cb(null, plants[0])
+		})
 	}))
 }

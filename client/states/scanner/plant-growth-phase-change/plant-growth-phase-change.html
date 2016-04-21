@@ -8,7 +8,7 @@
 					</td>
 					<td class="{{plantGrowthPhaseChange.growthPhase ? 'text-primary' : 'text-warning'}}">
 						{{#if plantGrowthPhaseChange.growthPhase}}
-							{{plantGrowthPhaseChange.growthPhase}}
+							{{getPreviousGrowthPhase(plantGrowthPhaseChange.growthPhase)}}
 						{{else}}
 							None selected
 						{{/if}}
@@ -45,7 +45,7 @@
 			<table class="table table-striped">
 				<tbody>
 					{{#plantGrowthPhaseChange.plantTags.concat().reverse()}}
-						<tr class="scanner-row">
+						<tr class="scanner-row {{#if plantGrowthPhaseChange.growthPhase && plantGrowthPhaseChange.tagNumberToPlant[this] && plantGrowthPhaseChange.tagNumberToPlant[this].growthPhase !== getPreviousGrowthPhase(plantGrowthPhaseChange.growthPhase)}}warning{{/if}}">
 							<td>
 								{{.}}
 							</td>

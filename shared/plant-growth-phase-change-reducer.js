@@ -14,6 +14,8 @@ function alreadyContainsTag(listOfTags, tagNumber) {
 
 // This document represents the result of user interaction
 
+const growthPhases = require('./growth-phase').list
+
 module.exports = makeReducer({
 	SCAN_PLANT: (state, action) => {
 		if (alreadyContainsTag(state.plantTags, action.payload)) {
@@ -50,9 +52,9 @@ module.exports = makeReducer({
 			plantTags: state.plantTags.filter(tag => tag.toLowerCase() !== lowercase)
 		}
 	}
-}, {
-	plantTags: [],
+}, Object.freeze({
+	plantTags: Object.freeze([]),
 	strain: null,
-	growthPhase: 'immature',
+	growthPhase: null,
 	tagNumberToPlant: {}
-})
+}))

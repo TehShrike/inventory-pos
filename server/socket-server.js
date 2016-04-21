@@ -6,10 +6,8 @@ var socketHandlers = fs.readdirSync('server/socket-api')
 	.map(require)
 
 module.exports = function handleUserConnection(context, socket) {
-	const userId = context.userId
-	const accountId = context.userId
-	const accountRoom = getAccountRoom(accountId)
-	const userRoom = getUserRoom(userId)
+	const accountRoom = getAccountRoom(context.userId)
+	const userRoom = getUserRoom(context.userId)
 
 	const broadcast = {
 		toAccount: (key, value) => socket.broadcast.to(accountRoom).emit(key, value)

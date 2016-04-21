@@ -60,14 +60,15 @@ module.exports = function plantDb(connection) {
 		db: connection
 	}
 
-	function loadByTag({ tagNumber, accountId }, cb) {
+	function loadByTag({ tagNumber, accountId, tagScope }, cb) {
 		const query = q.select(COLUMNS)
 			.from(TABLE)
 			.where('account_id', accountId)
 			.where('tag_number', tagNumber)
+			.where('tag_scope', tagScope)
 			.build()
 
-		db.queryFirst(connection, query, cb)
+		db.query(connection, query, cb)
 	}
 
 	return {

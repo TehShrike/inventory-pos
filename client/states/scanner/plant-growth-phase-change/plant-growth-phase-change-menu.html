@@ -17,7 +17,7 @@
 			</button>
 		</div>
 	</div>
-	{{#if plantGrowthPhaseChange.room && plantGrowthPhaseChange.strain && plantGrowthPhaseChange.growthPhase && plantGrowthPhaseChange.plantTags.length > 0}}
+	{{#if plantGrowthPhaseChange.growthPhase && plantGrowthPhaseChange.plantTags.length > 0}}
 		<div class="row">
 			<div class="col-xs-12">
 				<button class="btn btn-success btn-lg btn-block" on-click="fire('dispatch', 'START_SAVE')">Commit document</button>

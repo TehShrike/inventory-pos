@@ -1,15 +1,15 @@
-var saver = require('./saver')
-var everythingOptionalExcept = require('./joi-everything-optional-except')
-var dropKeys = require('./drop-keys')
-var db = require('./db-helpers')
+const saver = require('./saver')
+const everythingOptionalExcept = require('./joi-everything-optional-except')
+const dropKeys = require('./drop-keys')
+const db = require('./db-helpers')
 
-var Joi = require('joi')
-var q = require('sql-concat')
+const Joi = require('joi')
+const q = require('sql-concat')
 
-var TABLE = 'plant_growth_phase_change'
-var COLUMNS = ['plant_growth_phase_change_id', 'plant_id', 'date', 'from_growth_phase', 'to_growth_phase']
+const TABLE = 'plant_growth_phase_change'
+const COLUMNS = ['plant_growth_phase_change_id', 'plant_id', 'date', 'from_growth_phase', 'to_growth_phase']
 
-var joiObject = {
+const joiObject = {
 	plant_growth_phase_change_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	plant_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	date: Joi.date().invalid(null),
@@ -17,8 +17,8 @@ var joiObject = {
 	to_growth_phase: Joi.any().valid('immature','vegetative','flowering','harvested','packaged').invalid(null)
 }
 
-var insertSchema = Joi.object(joiObject)
-var updateSchema = Joi.object(
+const insertSchema = Joi.object(joiObject)
+const updateSchema = Joi.object(
 	dropKeys(
 		everythingOptionalExcept(joiObject, ['plant_growth_phase_change_id']),
 	['plant_id', 'date', 'from_growth_phase', 'to_growth_phase']))
@@ -26,7 +26,7 @@ var updateSchema = Joi.object(
 module.exports = function plantGrowthPhaseChangeDb(connection) {
 
 	function loadPlantGrowthPhase(plantGrowthPhaseChangeId, cb) {
-		var query = q.select(COLUMNS)
+		const query = q.select(COLUMNS)
 			.from(TABLE)
 			.where('plant_growth_phase_change_id', plantGrowthPhaseChangeId)
 			.build()
@@ -35,10 +35,19 @@ module.exports = function plantGrowthPhaseChangeDb(connection) {
 	}
 
 	function insertRows(newGrowthPhaseChanges, cb) {
-		connection.query('INSERT INTO plant_growth_phase_change (plant_id, date, from_growth_phase, to_growth_phase) VALUES ?', [newGrowthPhaseChanges], cb)
+		const orderedColumns = newGrowthPhaseChanges.map(row => {
+			return [
+				row.plantId,
+				row.date,
+				row.fromGrowthPhase,
+				row.toGrowthPhase
+			]
+		})
+
+		connection.query('INSERT INTO plant_growth_phase_change (plant_id, date, from_growth_phase, to_growth_phase) VALUES ?', [orderedColumns], cb)
 	}
 
-	var saverOptions = {
+	const saverOptions = {
 		insertSchema: insertSchema,
 		updateSchema: updateSchema,
 		load: loadPlantGrowthPhase,

@@ -72,16 +72,23 @@ function makeServer() {
 				if (err) {
 					cb(err)
 				} else {
-					socketHandler({
-						userId: user.userId,
-						accountId: user.accountId,
-						config: config
-					}, socket)
+					db.account.load(user.accountId, (err, account) => {
+						if (err) {
+							cb(err)
+						} else {
+							socketHandler({
+								userId: user.userId,
+								accountId: user.accountId,
+								tagScope: account.defaultTagScope,
+								config: config
+							}, socket)
 
 
-					cb(null, {
-						userId: userId,
-						name: 'Totally cool user'
+							cb(null, {
+								userId: userId,
+								name: 'Totally cool user'
+							})
+						}
 					})
 				}
 			})

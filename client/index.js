@@ -16,6 +16,8 @@ var ractiveRenderer = makeRactiveRenderer(Ractive, {
 	events: {
 		dragAndDropFiles: dragAndDropFiles
 	}
+}, {
+	deepCopyDataOnSet: true
 })
 
 var stateRouter = makeStateRouter(ractiveRenderer, '#main')

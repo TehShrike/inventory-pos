@@ -1,10 +1,11 @@
-var all = require('async-all')
-var { switchForNamedArgs } = require('common/action-helpers.js')
-var makeReducer = require('create-redux-reducer-from-map')
-var { combineReducers } = require('redux')
-var { reducer: addPlantReducer } = require('documents/add-plant-document.js')
-var { getActiveDocument } = require('documents/documents.js')
-var template = require('./add-plant.html')
+const all = require('async-all')
+const { switchForNamedArgs } = require('common/action-helpers.js')
+const makeReducer = require('create-redux-reducer-from-map')
+const { combineReducers } = require('redux')
+const { reducer: addPlantReducer } = require('documents/add-plant-document.js')
+const { getActiveDocument } = require('documents/documents.js')
+const template = require('./add-plant.html')
+const createSaveState = require('common/save.js')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
@@ -61,5 +62,16 @@ module.exports = function({ stateRouter, mediator }) {
 
 			context.on('destroy', unsubscribe)
 		}
+	})
+
+
+	createSaveState({
+		stateRouter,
+		mediator,
+		documentName: 'addPlant',
+		documentStateName: 'scanner.add-plant',
+		name: 'scanner.add-plant-save',
+		route: 'add-plant/save',
+		messageName: 'save add plant document'
 	})
 }

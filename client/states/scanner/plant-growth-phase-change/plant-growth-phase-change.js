@@ -1,10 +1,12 @@
-var all = require('async-all')
-var { switchForNamedArgs } = require('common/action-helpers.js')
-var makeReducer = require('create-redux-reducer-from-map')
-var { combineReducers } = require('redux')
-var { reducer: plantGrowthPhaseChangeReducer } = require('documents/plant-growth-phase-change-document.js')
-var { getActiveDocument } = require('documents/documents.js')
-var template = require('./plant-growth-phase-change.html')
+const all = require('async-all')
+const { switchForNamedArgs } = require('common/action-helpers.js')
+const makeReducer = require('create-redux-reducer-from-map')
+const { combineReducers } = require('redux')
+const { reducer: plantGrowthPhaseChangeReducer } = require('documents/plant-growth-phase-change-document.js')
+const { getActiveDocument } = require('documents/documents.js')
+const template = require('./plant-growth-phase-change.html')
+const { getNext: getNextGrowthPhase, getPrevious: getPreviousGrowthPhase } = require('shared/growth-phase')
+const createSaveState = require('common/save.js')
 
 module.exports = function({ stateRouter, mediator }) {
 	stateRouter.addState({
@@ -12,7 +14,11 @@ module.exports = function({ stateRouter, mediator }) {
 		route: 'plant-growth-phase-change',
 		template: {
 			template,
-			twoway: false
+			twoway: false,
+			modifyArrays: false,
+			data: {
+				getPreviousGrowthPhase: getPreviousGrowthPhase,
+			}
 		},
 		data: {
 			reducer: combineReducers({
@@ -33,15 +39,21 @@ module.exports = function({ stateRouter, mediator }) {
 				}, {})
 			}),
 			afterAction: switchForNamedArgs({
-				SCAN_PLANT: ({ dispatch, action }) => {
+				SCAN_PLANT: ({ dispatch, action, state }) => {
 					mediator.request('emitToServer', 'load plant by tag number', action.payload, (err, plant) => {
 						if (err) {
 							console.error(err)
-						} if (plant) {
+						} else if (plant) {
 							dispatch({
 								type: 'SET_TAG_DETAILS',
 								payload: plant
 							})
+							if (!state.plantGrowthPhaseChange.growthPhase) {
+								dispatch({
+									type: 'SELECT_GROWTH_PHASE',
+									payload: getNextGrowthPhase(plant.growthPhase)
+								})
+							}
 						} else {
 							dispatch({
 								type: 'REMOVE_PLANT',
@@ -50,7 +62,7 @@ module.exports = function({ stateRouter, mediator }) {
 						}
 					})
 					setTimeout(() => dispatch({ type: 'CLEAR_BARCODE_INPUT' }), 100)
-				}
+				},
 			})
 		},
 		resolve: function(data, parameters, cb) {
@@ -67,4 +79,15 @@ module.exports = function({ stateRouter, mediator }) {
 			context.on('destroy', unsubscribe)
 		}
 	})
+
+	createSaveState({
+		stateRouter,
+		mediator,
+		documentName: 'plantGrowthPhaseChange',
+		documentStateName: 'scanner.plant-growth-phase-change',
+		name: 'scanner.plant-growth-phase-change-save',
+		route: 'plant-growth-phase-change/save',
+		messageName: 'save plant growth phase change document'
+	})
+
 }
