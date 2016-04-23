@@ -29,4 +29,15 @@ module.exports = function({ userId, accountId, tagScope }, socket, broadcast) {
 			cb(null, plants[0])
 		})
 	}))
+
+	socket.on('load plant details by tag number', serializeErrorPassedToLastCallback((tagNumber, cb) => {
+		plantDb.loadPlantWithDetailsByTag({
+			accountId,
+			tagNumber,
+			tagScope
+		}, (err, plants) => {
+			if (err) return cb(err)
+			cb(null, plants[0])
+		})
+	}))
 }

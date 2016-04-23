@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/TehShrike/inventory-pos#readme",
   "dependencies": {
-    "abstract-state-router": "~5.11.0",
+    "abstract-state-router": "~5.12.3",
     "asr-active-state-watcher": "~1.0.0",
     "asr-fsm-navigation": "~0.1.0",
     "async-all": "1.0.1",

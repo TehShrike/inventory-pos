@@ -34,3 +34,7 @@
 .btn {
 	touch-action: manipulation
 }
+
+.vertical-space-1 {
+	margin-top: 15px;
+}

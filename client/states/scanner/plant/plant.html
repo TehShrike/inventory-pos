@@ -1,0 +1,51 @@
+<div class="container plant-container">
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-md-offset-3">
+			<h2 class="text-center">{{parameters.tagNumber}}</h2>
+			<a href="{{makePath('scanner.menu')}}" class="btn btn-default btn-block">Back</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-lg-offset-3 col-lg-6">
+			{{#if plant}}
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>
+								<strong>Strain</strong>
+							</td>
+							<td>
+								{{strain.name}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Room</strong>
+							</td>
+							<td>
+								{{room.name}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>Growth Phase</strong>
+							</td>
+							<td>
+								{{plant.growthPhase}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{{else}}
+				<div class="panel panel-danger vertical-space-1">
+					<div class="panel-heading">
+						Not found
+					</div>
+					<div class="panel-body">
+					Tag number {{parameters.tagNumber}} not found
+					</div>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+</div>

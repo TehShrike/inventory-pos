@@ -1,15 +1,16 @@
-var saver = require('./saver')
-var everythingOptionalExcept = require('./joi-everything-optional-except')
-var dropKeys = require('./drop-keys')
-var db = require('./db-helpers')
+const saver = require('./saver')
+const everythingOptionalExcept = require('./joi-everything-optional-except')
+const dropKeys = require('./drop-keys')
+const db = require('./db-helpers')
 
-var Joi = require('joi')
-var q = require('sql-concat')
+const Joi = require('joi')
+const q = require('sql-concat')
 
-var TABLE = 'plant'
-var COLUMNS = ['plant_id', 'account_id', 'tag_scope', 'tag_number', 'strain_id', 'room_id', 'growth_phase', 'version']
+const TABLE = 'plant'
+const COLUMNS = ['plant_id', 'account_id', 'tag_scope', 'tag_number', 'strain_id', 'room_id', 'growth_phase', 'version']
+const QUALIFIED_COLUMNS = COLUMNS.map(column => TABLE + '.' + column)
 
-var joiObject = {
+const joiObject = {
 	plant_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	account_id: Joi.number().integer().max(4294967295).min(0).invalid(null),
 	tag_scope: Joi.string().max(20),
@@ -20,8 +21,8 @@ var joiObject = {
 	version: Joi.number().integer().max(4294967295).min(0).invalid(null)
 }
 
-var insertSchema = Joi.object(joiObject)
-var updateSchema = Joi.object(
+const insertSchema = Joi.object(joiObject)
+const updateSchema = Joi.object(
 	dropKeys(
 		everythingOptionalExcept(joiObject, ['plant_id', 'version']),
 	['account_id', 'tag_scope', 'tag_number']))
@@ -29,7 +30,7 @@ var updateSchema = Joi.object(
 module.exports = function plantDb(connection) {
 
 	function loadPlant(plantId, cb) {
-		var query = q.select(COLUMNS)
+		const query = q.select(COLUMNS)
 			.from(TABLE)
 			.where('plant_id', plantId)
 			.build()
@@ -38,7 +39,7 @@ module.exports = function plantDb(connection) {
 	}
 
 	function saveAddPlantDocument(doc, cb) {
-		var newPlantsToSave = doc.plantTags.map(tag => {
+		const newPlantsToSave = doc.plantTags.map(tag => {
 			return [
 				tag,
 				doc.accountId,
@@ -53,11 +54,33 @@ module.exports = function plantDb(connection) {
 		connection.query('INSERT INTO plant (tag_number, account_id, tag_scope, strain_id, room_id, growth_phase, version) VALUES ?', [newPlantsToSave], cb)
 	}
 
-	var saverOptions = {
+	const saverOptions = {
 		insertSchema: insertSchema,
 		updateSchema: updateSchema,
 		load: loadPlant,
 		db: connection
+	}
+
+	function loadPlantWithDetailsByTag({ tagNumber, accountId, tagScope }, cb) {
+		const STRAIN_COLUMNS = ['strain_id', 'name', 'version'].map(column => `strain.${column} AS strain_${column}`)
+		const ROOM_COLUMNS = ['room_id', 'identifier', 'name', 'version'].map(column => `room.${column} AS room_${column}`)
+		const PLANT_COLUMNS = COLUMNS.map(column => `plant.${column} AS plant_${column}`)
+
+		const query = q.select(PLANT_COLUMNS)
+			.select(STRAIN_COLUMNS)
+			.select(ROOM_COLUMNS)
+			.from(TABLE)
+			.join('strain', 'strain.strain_id = plant.strain_id')
+			.join('room', 'room.room_id = plant.room_id')
+			.where('plant.account_id', accountId)
+			.where('plant.tag_number', tagNumber)
+			.where('plant.tag_scope', tagScope)
+			.build()
+
+		db.query(connection, query, (err, plants) => {
+			if (err) return cb(err)
+			cb(null, plants.map(row => db.splitIntoObjects(row, ['plant', 'room', 'strain'])))
+		})
 	}
 
 	function loadByTag({ tagNumber, accountId, tagScope }, cb) {
@@ -77,6 +100,8 @@ module.exports = function plantDb(connection) {
 			saver('plant', saverOptions, plant, cb)
 		},
 		load: loadPlant,
+		loadPlantWithDetailsByTag,
 		loadByTag
 	}
 }
+
