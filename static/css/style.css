@@ -30,3 +30,7 @@
 	line-height: 1.8;
 	border-radius: 6px;
 }
+
+.btn {
+	touch-action: manipulation
+}

@@ -37,6 +37,6 @@ socket.on('connect', function() {
 	socket.emit('authenticate', userId, function(err, user) {
 		globbed.services.forEach(service => service(context))
 
-		stateRouter.evaluateCurrentRoute('app.customer-search')
+		stateRouter.evaluateCurrentRoute('scanner.menu')
 	})
 })
