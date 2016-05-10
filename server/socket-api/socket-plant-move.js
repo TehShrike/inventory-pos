@@ -1,12 +1,9 @@
-var db = require('db')
-var socketServerUtil = require('socket-server-util')
-
-var serializeErrorPassedToLastCallback = socketServerUtil.serializeErrorPassedToLastCallback
-var callFunctionBeforeCallbackSync = socketServerUtil.callFunctionBeforeCallbackSync
-var serializeErrorForCallback = socketServerUtil.serializeErrorForCallback
+const db = require('db')
+const plantMoveSaver = require('documents/plant-move-saver')
+const { serializeErrorPassedToLastCallback, callFunctionBeforeCallbackSync, serializeErrorForCallback } = require('socket-server-util')
 
 module.exports = function(context, socket, broadcast) {
-	var plantMoveDb = db.plantMove
+	const plantMoveDb = db.plantMove
 
 	socket.on('load plant move', serializeErrorPassedToLastCallback(plantMoveDb.load))
 	socket.on('save plant move', function(plantMove, cb) {
@@ -14,5 +11,8 @@ module.exports = function(context, socket, broadcast) {
 			socket.emit('saved plant move', savedPlantMove)
 			broadcast.toAccount('saved plant move', savedPlantMove)
 		}))
+	})
+	socket.on('save plant move document', function(plantMoveDocument, cb) {
+		plantMoveSaver({ ...context, plantMoveDocument }, serializeErrorForCallback(cb))
 	})
 }

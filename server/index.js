@@ -76,12 +76,13 @@ function makeServer() {
 						if (err) {
 							cb(err)
 						} else {
-							socketHandler({
+							const context = {
 								userId: user.userId,
 								accountId: user.accountId,
 								tagScope: account.defaultTagScope,
 								config: config
-							}, socket)
+							}
+							socketHandler(context, socket)
 
 
 							cb(null, {

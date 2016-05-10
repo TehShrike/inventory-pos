@@ -83,15 +83,19 @@ module.exports = function plantDb(connection) {
 		})
 	}
 
-	function loadByTag({ tagNumber, accountId, tagScope }, cb) {
-		const query = q.select(COLUMNS)
+	function loadByTag({ tagNumber, accountId, tagScope, lock }, cb) {
+		var query = q.select(COLUMNS)
 			.from(TABLE)
 			.where('account_id', accountId)
 			.where('tag_number', tagNumber)
 			.where('tag_scope', tagScope)
-			.build()
 
-		db.query(connection, query, cb)
+
+		if (lock) {
+			query = query.forUpdate()
+		}
+
+		db.query(connection, query.build(), cb)
 	}
 
 	return {

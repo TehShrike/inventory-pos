@@ -1,0 +1,47 @@
+<div class="container plant-move-container">
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-md-offset-3">
+			<table class="table">
+				<tr>
+					<td>
+						New room:
+					</td>
+					<td class="{{plantMove.room ? 'text-primary' : 'text-warning'}}">
+						{{#if plantMove.room}}
+							{{plantMove.room.name}}
+						{{else}}
+							None selected
+						{{/if}}
+					</td>
+				</tr>
+			</table>
+			<a
+			href="{{makePath('scanner.plant-move-menu')}}"
+			class="btn btn-default btn-block">
+				Document...
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-lg-offset-3 col-lg-6">
+			<input type="text"
+				class="form-control"
+				placeholder="Plant tag"
+				on-change="fire('dispatchInput', 'SCAN_PLANT', event.node)"
+				value="{{other.barcodeInput}}">
+
+			<table class="table table-striped">
+				<tbody>
+					{{#plantMove.plantTags.concat().reverse()}}
+						<tr class="scanner-row">
+							<td>
+								{{.}}
+							</td>
+						</tr>
+					{{/}}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>

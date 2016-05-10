@@ -5,17 +5,6 @@ function alreadyContainsTag(listOfTags, tagNumber) {
 	return listOfTags.some(str => str.toLowerCase() === lowercase)
 }
 
-// scan plant (tag is unconfirmed)
-// approve plant scan (tag is confirmed)
-// remove scanned tag
-// add tag details
-// select growth phase
-// on growth phase change/tag scan: set a flag on plants whose growth phase isn't right before the currently selected one
-
-// This document represents the result of user interaction
-
-const growthPhases = require('./growth-phase').list
-
 module.exports = makeReducer({
 	SCAN_PLANT: (state, action) => {
 		if (alreadyContainsTag(state.plantTags, action.payload)) {
@@ -30,6 +19,12 @@ module.exports = makeReducer({
 			]
 		}
 	},
+	SELECT_ROOM: (state, action) => {
+		return {
+			...state,
+			room: action.payload
+		}
+	},
 	SET_TAG_DETAILS: (state, action) => {
 		return {
 			...state,
@@ -37,12 +32,6 @@ module.exports = makeReducer({
 				...action.tagDetails,
 				[action.payload.tagNumber]: action.payload
 			}
-		}
-	},
-	SELECT_GROWTH_PHASE: (state, action) => {
-		return {
-			...state,
-			growthPhase: action.payload
 		}
 	},
 	REMOVE_PLANT: (state, action) => {
@@ -54,6 +43,6 @@ module.exports = makeReducer({
 	}
 }, Object.freeze({
 	plantTags: Object.freeze([]),
-	growthPhase: null,
+	room: null,
 	tagNumberToPlant: {}
 }))

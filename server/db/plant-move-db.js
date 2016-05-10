@@ -23,29 +23,46 @@ var updateSchema = Joi.object(
 		everythingOptionalExcept(joiObject, ['plant_move_id']),
 	['plant_id', 'date', 'from_room_id', 'to_room_id']))
 
-module.exports = function plantGrowthPhaseChangeDb(connection) {
+module.exports = function plantMoveDb(connection) {
 
-	function loadPlantGrowthPhase(plantGrowthPhaseChangeId, cb) {
+	function loadPlantMove(plantMoveId, cb) {
 		var query = q.select(COLUMNS)
 			.from(TABLE)
-			.where('plant_move_id', plantGrowthPhaseChangeId)
+			.where('plant_move_id', plantMoveId)
 			.build()
 
 		db.queryFirst(connection, query, cb)
 	}
 
+	function insertRows(newPlantMoveRows, cb) {
+		if (newPlantMoveRows.length === 0) {
+			throw new Error(`Tried to insert 0 rows`)
+		}
+		const orderedColumns = newPlantMoveRows.map(row => {
+			return [
+				row.plantId,
+				row.date,
+				row.fromRoomId,
+				row.toRoomId
+			]
+		})
+
+		connection.query('INSERT INTO plant_move (plant_id, date, from_room_id, to_room_id) VALUES ?', [orderedColumns], cb)
+	}
+
 	var saverOptions = {
 		insertSchema: insertSchema,
 		updateSchema: updateSchema,
-		load: loadPlantGrowthPhase,
+		load: loadPlantMove,
 		db: connection,
 		immutable: true
 	}
 
 	return {
-		save: function savePlantGrowthPhaseChange(plantGrowthPhaseChange, cb) {
-			saver('plant_move', saverOptions, plantGrowthPhaseChange, cb)
+		save: function savePlantMove(plantMove, cb) {
+			saver('plant_move', saverOptions, plantMove, cb)
 		},
-		load: loadPlantGrowthPhase
+		load: loadPlantMove,
+		insertRows
 	}
 }
